@@ -35,7 +35,7 @@ type Arrangement_HardGood struct {
 	hard_goods_id  int
 }
 
-type Flower_Arrangement struct {
+type Arrangement_Flower struct {
 	flower_id      int
 	arrangement_id int
 	count          int
