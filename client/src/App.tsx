@@ -1,12 +1,13 @@
-import { Counter } from "./features/counter/Counter"
+import Container from "@mui/material/Container"
 import "./App.css"
 import Arrangements from "./features/arrangements/Arrangements"
 
 function App() {
   return (
     <div className="App">
-      <Counter />
-      <Arrangements />
+      <Container maxWidth="sm">
+        <Arrangements />
+      </Container>
     </div>
   )
 }
