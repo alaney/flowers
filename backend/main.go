@@ -1,20 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"encoding/json"
 	"net/http"
 )
 
 func main() {
 	connectDb()
 
-	argmts := getArrangements()
-
-	log.Println(argmts)
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
+		argmts := getArrangements()
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(argmts)
 	})
 
 	http.ListenAndServe(":80", nil)

@@ -44,25 +44,25 @@ type Arrangement_Flower struct {
 }
 
 type FlowerDto struct {
-	id             int
-	name           string
-	count          int
-	category       string
-	price_per_stem float32
+	Id             int     `json:"id"`
+	Name           string  `json:"name"`
+	Count          int     `json:"count"`
+	Category       string  `json:"category"`
+	Price_Per_Stem float32 `json:"pricePerStem"`
 }
 
 type ArrangementDto struct {
-	id           int
-	name         string
-	vessel_type  string // const or enum?
-	vessel_count int
-	vessel_cost  float32
-	foam_count   int
-	card_holder  bool
-	venmo        bool
-	paypal       bool
-	done         bool
-	json         string
-	flowers      []FlowerDto
-	hard_goods   []HardGood
+	Id           int         `json:"id"`
+	Name         string      `json:"name"`
+	Vessel_Type  string      `json:"vesselType"`
+	Vessel_Count int         `json:"vesselCount"`
+	Vessel_Cost  float32     `json:"vesselCost"`
+	Foam_Count   int         `json:"foamCount"`
+	Card_Holder  bool        `json:"cardHolder"`
+	Venmo        bool        `json:"venmo"`
+	Paypal       bool        `json:"paypal"`
+	Done         bool        `json:"done"`
+	Json         string      `json:"json"`
+	Flowers      []FlowerDto `json:"flowers"`
+	Hard_Goods   []HardGood  `json:"hardGoods"`
 }

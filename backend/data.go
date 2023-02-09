@@ -38,15 +38,15 @@ func getArrangements() []ArrangementDto {
 
 	for argmtRows.Next() {
 		var argmt ArrangementDto
-		err2 := argmtRows.Scan(&argmt.id, &argmt.name, &argmt.vessel_type, &argmt.vessel_count, &argmt.foam_count, &argmt.card_holder, &argmt.venmo, &argmt.paypal, &argmt.done, &argmt.vessel_cost, &argmt.json)
+		err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Cost, &argmt.Json)
 
 		if err2 != nil {
 			log.Fatal(err2)
 		}
 
-		f := getFlowersForArrangement(argmt.id)
+		f := getFlowersForArrangement(argmt.Id)
 
-		argmt.flowers = f
+		argmt.Flowers = f
 
 		argmtDtos = append(argmtDtos, argmt)
 	}
@@ -66,7 +66,7 @@ func getFlowersForArrangement(arrangement_id int) []FlowerDto {
 	var flowers []FlowerDto
 	for argmtFlowerRows.Next() {
 		var flower FlowerDto
-		err := argmtFlowerRows.Scan(&flower.id, &flower.name, &flower.count, &flower.category, &flower.price_per_stem)
+		err := argmtFlowerRows.Scan(&flower.Id, &flower.Name, &flower.Count, &flower.Category, &flower.Price_Per_Stem)
 
 		if err != nil {
 			log.Fatal(err)
