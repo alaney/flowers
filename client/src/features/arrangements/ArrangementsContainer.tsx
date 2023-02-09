@@ -20,6 +20,7 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
 
   useEffect(() => {
     dispatch(getArrangementsAsync())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (status === "loading") {
@@ -50,8 +51,6 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
       </Routes>
     </div>
   )
-
-  // return <ArrangementsList arrangements={arrangements} />
 }
 
 export default ArrangementsContainer

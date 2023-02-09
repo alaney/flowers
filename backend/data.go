@@ -77,3 +77,7 @@ func getFlowersForArrangement(arrangement_id int) []FlowerDto {
 
 	return flowers
 }
+
+// func updateArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
+// 	DB.Query("update arrangements")
+// }
