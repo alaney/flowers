@@ -8,7 +8,7 @@ import (
 func main() {
 	connectDb()
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/arrangements", func(w http.ResponseWriter, r *http.Request) {
 		argmts := getArrangements()
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
