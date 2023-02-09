@@ -1,13 +1,10 @@
-import Container from "@mui/material/Container"
 import "./App.css"
-import Arrangements from "./features/arrangements/Arrangements"
+import ArrangementsContainer from "./features/arrangements/ArrangementsContainer"
 
 function App() {
   return (
     <div className="App">
-      <Container maxWidth="sm">
-        <Arrangements />
-      </Container>
+      <ArrangementsContainer />
     </div>
   )
 }
