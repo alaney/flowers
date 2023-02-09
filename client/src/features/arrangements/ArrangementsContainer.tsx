@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import React, { useEffect } from "react"
@@ -29,27 +30,40 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
     return <div>Failed!</div>
   }
 
+  // return (<Grid container spacing={2}>
+  //   <Grid item xs={6} md={8}>
+  //     <Item>xs=6 md=8</Item>
+  //   </Grid>
+  //   <Grid item xs={6} md={4}>
+  //     <Item>xs=6 md=4</Item>
+  //   </Grid>
+  //   <Grid item xs={6} md={4}>
+  //     <Item>xs=6 md=4</Item>
+  //   </Grid>
+  //   <Grid item xs={6} md={8}>
+  //     <Item>xs=6 md=8</Item>
+  //   </Grid>
+  // </Grid>)
+
   return matches ? (
-    <div>
-      <div>
+    <Grid container spacing={2}>
+      <Grid item md={3}>
         <Routes>
           <Route path={"/*"} element={<ArrangementsList arrangements={arrangements} />} />
         </Routes>
-      </div>
-      <div>
+      </Grid>
+      <Grid item md={9}>
         <Routes>
           <Route path={"/"} element={<ArrangementDetails />} />
           <Route path="/:id" element={<ArrangementDetails />} />
         </Routes>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   ) : (
-    <div>
-      <Routes>
-        <Route path="/" element={<ArrangementsList arrangements={arrangements} />} />
-        <Route path="/:id" element={<ArrangementDetails />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<ArrangementsList arrangements={arrangements} />} />
+      <Route path="/:id" element={<ArrangementDetails />} />
+    </Routes>
   )
 }
 
