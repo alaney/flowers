@@ -11,6 +11,7 @@ type Arrangement struct {
 	name         string
 	vessel_type  string // const or enum?
 	vessel_count int
+	vessel_cost  float32
 	foam_count   int
 	card_holder  bool
 	venmo        bool
@@ -40,4 +41,28 @@ type Arrangement_Flower struct {
 	arrangement_id int
 	count          int
 	category       string // const or enum?
+}
+
+type FlowerDto struct {
+	id             int
+	name           string
+	count          int
+	category       string
+	price_per_stem float32
+}
+
+type ArrangementDto struct {
+	id           int
+	name         string
+	vessel_type  string // const or enum?
+	vessel_count int
+	vessel_cost  float32
+	foam_count   int
+	card_holder  bool
+	venmo        bool
+	paypal       bool
+	done         bool
+	json         string
+	flowers      []FlowerDto
+	hard_goods   []HardGood
 }
