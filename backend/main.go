@@ -8,7 +8,7 @@ import (
 func main() {
 	connectDb()
 
-	http.HandleFunc("/arrangements", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/arrangements", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 		case "GET":
@@ -27,7 +27,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/flowers", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/api/flowers", func(w http.ResponseWriter, r *http.Request) {
 		flowers := getFlowers()
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

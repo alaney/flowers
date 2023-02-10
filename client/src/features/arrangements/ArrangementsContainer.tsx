@@ -40,7 +40,7 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
       <Grid item md={9}>
         <Routes>
           <Route path={"/"} element={<ArrangementDetails />} />
-          <Route path="/:id" element={<ArrangementDetails />} />
+          <Route path=":id" element={<ArrangementDetails />} />
         </Routes>
       </Grid>
     </Grid>

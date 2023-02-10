@@ -83,7 +83,7 @@ func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
 // }
 
 func getFlowers() []Flower {
-	flowerRows, err := DB.Query("select * from flowers")
+	flowerRows, err := DB.Query("select * from flowers order by name")
 
 	if err != nil {
 		log.Fatal(err)

@@ -12,7 +12,7 @@ const ArrangementsList: React.FC<ArrangementsListProps> = ({ arrangements }) => 
     <List>
       {arrangements.map((a) => (
         <ListItem key={a.id} disablePadding>
-          <Link to="/1">
+          <Link to={`/arrangements/${a.id}`}>
             <ListItemButton>
               <ListItemText primary={a.name} />
             </ListItemButton>
