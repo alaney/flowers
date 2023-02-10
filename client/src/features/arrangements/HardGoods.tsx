@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material"
 import React from "react"
-import { Arrangement } from "../../types/Arrangement"
+import { Arrangement } from "../../types/Types"
 import CardHolderInputs from "./CardHolderInputs"
 import FoamInputs from "./FoamInputs"
 import VesselInputs from "./VesselInputs"

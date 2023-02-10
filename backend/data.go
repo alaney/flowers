@@ -54,7 +54,7 @@ func getArrangements() []ArrangementDto {
 	return argmtDtos
 }
 
-func getFlowersForArrangement(arrangement_id int) []FlowerDto {
+func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
 	argmtFlowerRows, err := DB.Query(fmt.Sprintf("select f.id, f.name, af.count, af.category, f.price_per_stem from arrangements_flowers af, flowers f where af.arrangement_id = %d and af.flower_id = f.id", arrangement_id))
 
 	if err != nil {
@@ -63,9 +63,9 @@ func getFlowersForArrangement(arrangement_id int) []FlowerDto {
 
 	defer argmtFlowerRows.Close()
 
-	var flowers []FlowerDto
+	var flowers []ArrangementFlowerDto
 	for argmtFlowerRows.Next() {
-		var flower FlowerDto
+		var flower ArrangementFlowerDto
 		err := argmtFlowerRows.Scan(&flower.Id, &flower.Name, &flower.Count, &flower.Category, &flower.Price_Per_Stem)
 
 		if err != nil {

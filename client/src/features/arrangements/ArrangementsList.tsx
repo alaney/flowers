@@ -1,6 +1,6 @@
 import { List, ListItem, ListItemButton, ListItemText } from "@mui/material"
 import React from "react"
-import { Arrangement } from "../../types/Arrangement"
+import { Arrangement } from "../../types/Types"
 import { Link } from "react-router-dom"
 
 interface ArrangementsListProps {

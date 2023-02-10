@@ -10,16 +10,24 @@ export interface Arrangement {
   paypal: boolean
   done: boolean
   json: string
-  flowers: Flower[]
+  flowers: ArrangementFlower[]
   hardGoods: HardGood[]
 }
 
-export interface Flower {
+export interface ArrangementFlower {
   id: number
   name: string
   count: number
   category: string
   pricePerStem: number
+}
+
+export interface Flower {
+  id: number
+  name: string
+  pricePerStem: number
+  pricePerBundle: number
+  stemCount: number
 }
 
 export interface HardGood {

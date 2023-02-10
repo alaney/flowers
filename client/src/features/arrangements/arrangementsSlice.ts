@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { Arrangement } from "../../types/Arrangement"
+import { Arrangement } from "../../types/Types"
 import { fetchArrangements } from "./arrangementsApi"
 
 export interface ArrangementsState {

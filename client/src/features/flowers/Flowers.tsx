@@ -1,9 +1,9 @@
 import { Grid, TextField } from "@mui/material"
 import React from "react"
-import { Flower } from "../../types/Arrangement"
+import { ArrangementFlower } from "../../types/Types"
 
 interface FlowersProps {
-  flowers: Flower[]
+  flowers: ArrangementFlower[]
 }
 
 const Flowers: React.FC<FlowersProps> = ({ flowers }) => {

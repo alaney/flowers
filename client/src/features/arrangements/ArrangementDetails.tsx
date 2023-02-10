@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { RootState } from "../../app/store"
-import { Arrangement } from "../../types/Arrangement"
+import { Arrangement } from "../../types/Types"
 import Flowers from "../flowers/FlowersContainer"
 import HardGoods from "./HardGoods"
 

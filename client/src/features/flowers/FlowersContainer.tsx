@@ -1,11 +1,11 @@
 import { Grid } from "@mui/material"
 import React from "react"
-import { Flower } from "../../types/Arrangement"
+import { ArrangementFlower } from "../../types/Types"
 import FlowerCategory from "./FlowerCategory"
 import Flowers from "./Flowers"
 
 interface FlowersContainerProps {
-  flowers: Flower[]
+  flowers: ArrangementFlower[]
 }
 
 const categories = ["base", "primary", "filler", "bits"]

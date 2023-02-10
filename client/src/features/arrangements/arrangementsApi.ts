@@ -1,4 +1,4 @@
-import { Arrangement } from "../../types/Arrangement"
+import { Arrangement } from "../../types/Types"
 
 export async function fetchArrangements(): Promise<Arrangement[]> {
   const resp = await fetch("/arrangements")

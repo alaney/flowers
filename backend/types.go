@@ -1,9 +1,11 @@
 package main
 
 type Flower struct {
-	id             int
-	name           string
-	price_per_stem float32
+	id               int
+	name             string
+	price_per_stem   float32
+	stem_count       int
+	price_per_bundle float32
 }
 
 type Arrangement struct {
@@ -43,7 +45,7 @@ type Arrangement_Flower struct {
 	category       string // const or enum?
 }
 
-type FlowerDto struct {
+type ArrangementFlowerDto struct {
 	Id             int     `json:"id"`
 	Name           string  `json:"name"`
 	Count          int     `json:"count"`
@@ -52,17 +54,17 @@ type FlowerDto struct {
 }
 
 type ArrangementDto struct {
-	Id           int         `json:"id"`
-	Name         string      `json:"name"`
-	Vessel_Type  string      `json:"vesselType"`
-	Vessel_Count int         `json:"vesselCount"`
-	Vessel_Cost  float32     `json:"vesselCost"`
-	Foam_Count   int         `json:"foamCount"`
-	Card_Holder  bool        `json:"cardHolder"`
-	Venmo        bool        `json:"venmo"`
-	Paypal       bool        `json:"paypal"`
-	Done         bool        `json:"done"`
-	Json         string      `json:"json"`
-	Flowers      []FlowerDto `json:"flowers"`
-	Hard_Goods   []HardGood  `json:"hardGoods"`
+	Id           int                    `json:"id"`
+	Name         string                 `json:"name"`
+	Vessel_Type  string                 `json:"vesselType"`
+	Vessel_Count int                    `json:"vesselCount"`
+	Vessel_Cost  float32                `json:"vesselCost"`
+	Foam_Count   int                    `json:"foamCount"`
+	Card_Holder  bool                   `json:"cardHolder"`
+	Venmo        bool                   `json:"venmo"`
+	Paypal       bool                   `json:"paypal"`
+	Done         bool                   `json:"done"`
+	Json         string                 `json:"json"`
+	Flowers      []ArrangementFlowerDto `json:"flowers"`
+	Hard_Goods   []HardGood             `json:"hardGoods"`
 }
