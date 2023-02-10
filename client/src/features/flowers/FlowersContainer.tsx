@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "../../app/hooks"
 import { RootState } from "../../app/store"
+import FlowersList from "./FlowersList"
 import { getFlowersAsync } from "./flowersSlice"
 
 interface FlowersContainerProps {}
@@ -21,13 +22,7 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   } else if (status === "failed") {
     return <div>Failed!</div>
   }
-  return (
-    <div>
-      {flowers.map((f) => (
-        <div>{f.name}</div>
-      ))}
-    </div>
-  )
+  return <FlowersList flowers={flowers} />
 }
 
 export default FlowersContainer
