@@ -8,11 +8,11 @@ interface FoamInputsProps {
 const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
   return (
     <Grid container spacing={2} alignItems="center">
-      <Grid item md={3}>
+      <Grid item md={2} sm={2} xs={2}>
         <Typography variant="button">foam</Typography>
       </Grid>
 
-      <Grid item md={3}>
+      <Grid item md={2} sm={2} xs={3}>
         <TextField
           size="small"
           label="Cost"
@@ -23,7 +23,7 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
           value={"?"}
         ></TextField>
       </Grid>
-      <Grid item md={3}>
+      <Grid item md={2} sm={2} xs={3}>
         <TextField size="small" label="Quantity" type="number" value={count}></TextField>
       </Grid>
     </Grid>

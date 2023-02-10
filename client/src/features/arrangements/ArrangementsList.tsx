@@ -11,7 +11,7 @@ const ArrangementsList: React.FC<ArrangementsListProps> = ({ arrangements }) => 
   return (
     <List>
       {arrangements.map((a) => (
-        <ListItem disablePadding>
+        <ListItem key={a.id} disablePadding>
           <Link to="/1">
             <ListItemButton>
               <ListItemText primary={a.name} />
