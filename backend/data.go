@@ -81,3 +81,27 @@ func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
 // func updateArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 // 	DB.Query("update arrangements")
 // }
+
+func getFlowers() []Flower {
+	flowerRows, err := DB.Query("select * from flowers")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer flowerRows.Close()
+
+	var flowers []Flower
+	for flowerRows.Next() {
+		var flower Flower
+		err := flowerRows.Scan(&flower.Id, &flower.Name, &flower.Price_Per_Bundle, &flower.Stem_Count, &flower.Price_Per_Stem)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		flowers = append(flowers, flower)
+	}
+
+	return flowers
+}

@@ -27,6 +27,13 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/flowers", func(w http.ResponseWriter, r *http.Request) {
+		flowers := getFlowers()
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(flowers)
+	})
+
 	http.ListenAndServe(":80", nil)
 
 }

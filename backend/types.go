@@ -1,11 +1,11 @@
 package main
 
 type Flower struct {
-	id               int
-	name             string
-	price_per_stem   float32
-	stem_count       int
-	price_per_bundle float32
+	Id               int     `json:"id"`
+	Name             string  `json:"name"`
+	Price_Per_Stem   float32 `json:"pricePerStem"`
+	Stem_Count       int     `json:"stemCount"`
+	Price_Per_Bundle float32 `json:"pricePerBundle"`
 }
 
 type Arrangement struct {
