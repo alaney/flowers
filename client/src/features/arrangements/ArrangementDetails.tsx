@@ -5,7 +5,7 @@ import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { RootState } from "../../app/store"
 import { Arrangement } from "../../types/Types"
-import Flowers from "../flowers/FlowersContainer"
+import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer"
 import HardGoods from "./HardGoods"
 
 interface ArrangementDetailsProps {}
@@ -38,7 +38,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       </Typography>
       <Divider />
       <div style={{ margin: "16px 0" }}>
-        <Flowers flowers={arrangement.flowers} />
+        <ArrangementFlowersContainer flowers={arrangement.flowers} />
       </div>
     </>
   )

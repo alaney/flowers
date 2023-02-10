@@ -1,11 +1,11 @@
 import { Grid, Typography } from "@mui/material"
 import React, { PropsWithChildren } from "react"
 
-interface FlowerCategoryProps {
+interface FlowerArrangementCategoryProps {
   name: string
 }
 
-const FlowerCategory: React.FC<PropsWithChildren<FlowerCategoryProps>> = ({ children, name }) => {
+const FlowerArrangementCategory: React.FC<PropsWithChildren<FlowerArrangementCategoryProps>> = ({ children, name }) => {
   return (
     <Grid container item>
       <Grid item md={2} sm={2} xs={2}>
@@ -18,4 +18,4 @@ const FlowerCategory: React.FC<PropsWithChildren<FlowerCategoryProps>> = ({ chil
   )
 }
 
-export default FlowerCategory
+export default FlowerArrangementCategory

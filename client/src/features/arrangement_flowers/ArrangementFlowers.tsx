@@ -2,11 +2,11 @@ import { Grid, TextField } from "@mui/material"
 import React from "react"
 import { ArrangementFlower } from "../../types/Types"
 
-interface FlowersProps {
+interface ArrangementFlowersProps {
   flowers: ArrangementFlower[]
 }
 
-const Flowers: React.FC<FlowersProps> = ({ flowers }) => {
+const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ flowers }) => {
   return (
     <>
       {flowers.map((f) => (
@@ -18,4 +18,4 @@ const Flowers: React.FC<FlowersProps> = ({ flowers }) => {
   )
 }
 
-export default Flowers
+export default ArrangementFlowers
