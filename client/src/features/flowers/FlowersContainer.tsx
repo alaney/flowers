@@ -1,3 +1,4 @@
+import { Grid, Typography } from "@mui/material"
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "../../app/hooks"
@@ -22,7 +23,25 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   } else if (status === "failed") {
     return <div>Failed!</div>
   }
-  return <FlowersList flowers={flowers} />
+  return (
+    <>
+      <Grid container spacing={2}>
+        <Grid item sm={2} md={2}>
+          <Typography variant="button">name</Typography>
+        </Grid>
+        <Grid item sm={2} md={2}>
+          <Typography variant="button">price per bundle</Typography>
+        </Grid>
+        <Grid item sm={2} md={2}>
+          <Typography variant="button">stems</Typography>
+        </Grid>
+        <Grid item sm={2} md={2}>
+          <Typography variant="button">price per stem</Typography>
+        </Grid>
+      </Grid>
+      <FlowersList flowers={flowers} />
+    </>
+  )
 }
 
 export default FlowersContainer

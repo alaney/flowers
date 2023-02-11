@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
@@ -55,7 +54,7 @@ func getArrangements() []ArrangementDto {
 }
 
 func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
-	argmtFlowerRows, err := DB.Query(fmt.Sprintf("select f.id, f.name, af.count, af.category, f.price_per_stem from arrangements_flowers af, flowers f where af.arrangement_id = %d and af.flower_id = f.id", arrangement_id))
+	argmtFlowerRows, err := DB.Query("select f.id, f.name, af.count, af.category, f.price_per_stem from arrangements_flowers af, flowers f where af.arrangement_id = $1 and af.flower_id = f.id", arrangement_id)
 
 	if err != nil {
 		log.Fatal(err)
@@ -104,4 +103,23 @@ func getFlowers() []Flower {
 	}
 
 	return flowers
+}
+
+func patchFlower(flower Flower) Flower {
+	flowerRow, err1 := DB.Query("update flowers set name = $1 where id = $2 returning *", flower.Name, flower.Id)
+
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+
+	flowerRow.Next()
+	var updatedFlower Flower
+	err2 := flowerRow.Scan(&updatedFlower.Id, &updatedFlower.Name, &updatedFlower.Price_Per_Bundle, &updatedFlower.Stem_Count, &updatedFlower.Price_Per_Stem)
+
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+
+	return updatedFlower
+
 }

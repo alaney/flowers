@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { Flower } from "../../types/Types"
-import { fetchArrangements as fetchFlowers } from "./flowersApi"
+import { fetchFlowers, patchFlower } from "./flowersApi"
+import clonedeep from "lodash.clonedeep"
 
 export interface FlowersState {
   value: Flower[]
-  status: "idle" | "loading" | "failed"
+  status: "idle" | "loading" | "failed" | "loading-update" | "idle-update" | "failed-update"
 }
 
 const initialState: FlowersState = {
@@ -13,6 +14,7 @@ const initialState: FlowersState = {
 }
 
 export const getFlowersAsync = createAsyncThunk("flowers/fetchFlowers", async () => await fetchFlowers())
+export const updateFlowerAsync = createAsyncThunk<Flower, Flower>("flowers/patchFlowers", async (s) => await patchFlower(s))
 
 export const flowersSlice = createSlice({
   name: "flowers",
@@ -32,6 +34,19 @@ export const flowersSlice = createSlice({
       })
       .addCase(getFlowersAsync.rejected, (state) => {
         state.status = "failed"
+      })
+      .addCase(updateFlowerAsync.pending, (state) => {
+        state.status = "loading-update"
+      })
+      .addCase(updateFlowerAsync.rejected, (state) => {
+        state.status = "failed-update"
+      })
+      .addCase(updateFlowerAsync.fulfilled, (state, action) => {
+        state.status = "idle-update"
+        const updatedState = clonedeep(state.value)
+        const updateIndex = updatedState.findIndex((f) => f.id === action.payload.id)
+        updatedState.splice(updateIndex, 1, action.payload)
+        state.value = updatedState
       })
   },
 })
