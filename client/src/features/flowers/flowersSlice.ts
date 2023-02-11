@@ -5,7 +5,7 @@ import clonedeep from "lodash.clonedeep"
 
 export interface FlowersState {
   value: Flower[]
-  status: "idle" | "loading" | "failed" | "loading-update" | "idle-update" | "failed-update"
+  status: "idle" | "loading" | "failed"
 }
 
 const initialState: FlowersState = {
@@ -35,14 +35,8 @@ export const flowersSlice = createSlice({
       .addCase(getFlowersAsync.rejected, (state) => {
         state.status = "failed"
       })
-      .addCase(updateFlowerAsync.pending, (state) => {
-        state.status = "loading-update"
-      })
-      .addCase(updateFlowerAsync.rejected, (state) => {
-        state.status = "failed-update"
-      })
+
       .addCase(updateFlowerAsync.fulfilled, (state, action) => {
-        state.status = "idle-update"
         const updatedState = clonedeep(state.value)
         const updateIndex = updatedState.findIndex((f) => f.id === action.payload.id)
         updatedState.splice(updateIndex, 1, action.payload)
