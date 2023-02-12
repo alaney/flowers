@@ -106,7 +106,7 @@ func getFlowers() []Flower {
 }
 
 func patchFlower(flower Flower) Flower {
-	flowerRow, err1 := DB.Query("update flowers set name = $1 where id = $2 returning *", flower.Name, flower.Id)
+	flowerRow, err1 := DB.Query("update flowers set name = $1, price_per_bundle = $2, stem_count = $3 where id = $4 returning *", flower.Name, flower.Price_Per_Bundle, flower.Stem_Count, flower.Id)
 
 	if err1 != nil {
 		log.Fatal(err1)

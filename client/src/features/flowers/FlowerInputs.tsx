@@ -20,9 +20,10 @@ interface FlowerInput {
 
 const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
   const {
+    reset,
     handleSubmit,
     control,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm<FlowerInput>({
     defaultValues: {
       name: flower.name,
@@ -31,7 +32,6 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
     },
   });
   const [status, setStatus] = useState("idle");
-  const [hasUpdates, setHasUpdates] = useState(false);
   const dispatch = useAppDispatch();
 
   const onSave: SubmitHandler<FlowerInput> = async (flowerUpdate) => {
@@ -41,20 +41,14 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
         ...cloneDeep(flower),
         name: flowerUpdate.name,
         pricePerBundle: Number(flowerUpdate.price),
-        stemCount: flowerUpdate.count,
+        stemCount: Number(flowerUpdate.count),
       })
     );
     if (p.meta.requestStatus === "rejected") {
       setStatus("failed");
     } else {
-      setHasUpdates(false);
-      setStatus("idle");
+      reset(flowerUpdate);
     }
-  };
-
-  const onUndo = () => {
-    setHasUpdates(false);
-    setStatus("idle");
   };
 
   return (
@@ -66,14 +60,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               name="name"
               control={control}
               rules={{ required: true }}
-              render={({ field }) => (
-                <TextField
-                  size="small"
-                  error={!!errors.name}
-                  helperText={errors.name && "Must provide a value"}
-                  {...field}
-                />
-              )}
+              render={({ field }) => <TextField size="small" error={!!errors.name} {...field} />}
             />
           </Grid>
           <Grid item sm={2} md={2}>
@@ -87,8 +74,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
                   }}
                   size="small"
-                  error={!!errors.name}
-                  helperText={errors.name && "Must provide a value"}
+                  error={!!errors.price}
                   {...field}
                 />
               )}
@@ -99,35 +85,28 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               name="count"
               control={control}
               rules={{ required: true, min: 1 }}
-              render={({ field }) => (
-                <TextField
-                  size="small"
-                  error={!!errors.name}
-                  helperText={errors.name && "Must provide a value"}
-                  {...field}
-                />
-              )}
+              render={({ field }) => <TextField size="small" error={!!errors.count} {...field} />}
             />
           </Grid>
           <Grid item sm={2} md={2}>
-            <Typography>{`$ ${flower.pricePerStem}`}</Typography>
+            <Typography>{`$ ${Math.round(flower.pricePerStem * 100) / 100}`}</Typography>
           </Grid>
           {status === "failed" && (
             <Grid item sm={1} md={1}>
               <Typography>Failed!</Typography>
             </Grid>
           )}
-          {status === "loading" && (
+          {isSubmitting && (
             <Grid item sm={1} md={1}>
               <Typography>Saving...</Typography>
             </Grid>
           )}
-          {isDirty && (
+          {isDirty && !isSubmitting && (
             <Grid item sm={1} md={1}>
               <IconButton type="submit">
                 <SaveIcon color="success" />
               </IconButton>
-              <IconButton onClick={onUndo}>
+              <IconButton onClick={() => reset()}>
                 <UndoIcon />
               </IconButton>
             </Grid>
