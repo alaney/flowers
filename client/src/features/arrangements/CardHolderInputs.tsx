@@ -1,8 +1,8 @@
-import React from "react"
-import { Checkbox, Grid, InputAdornment, TextField, Typography } from "@mui/material"
+import React from "react";
+import { Checkbox, Grid, InputAdornment, TextField, Typography } from "@mui/material";
 
 interface CardHolderInputsProps {
-  cardHolder: boolean
+  cardHolder: boolean;
 }
 
 const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ cardHolder }) => {
@@ -26,7 +26,7 @@ const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ cardHolder }) => {
         ></TextField>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default CardHolderInputs
+export default CardHolderInputs;

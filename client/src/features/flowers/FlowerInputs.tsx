@@ -1,21 +1,21 @@
-import { Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
-import React, { useState } from "react"
-import { Flower } from "../../types/Types"
-import SaveIcon from "@mui/icons-material/Done"
-import UndoIcon from "@mui/icons-material/Undo"
-import { useAppDispatch } from "../../app/hooks"
-import { updateFlowerAsync } from "./flowersSlice"
-import cloneDeep from "lodash.clonedeep"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Flower } from "../../types/Types";
+import SaveIcon from "@mui/icons-material/Done";
+import UndoIcon from "@mui/icons-material/Undo";
+import { useAppDispatch } from "../../app/hooks";
+import { updateFlowerAsync } from "./flowersSlice";
+import cloneDeep from "lodash.clonedeep";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface FlowerInputsProps {
-  flower: Flower
+  flower: Flower;
 }
 
 interface FlowerInput {
-  name: string
-  price: string
-  count: number
+  name: string;
+  price: string;
+  count: number;
 }
 
 const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
@@ -29,33 +29,52 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
       price: flower.pricePerBundle.toString(),
       count: flower.stemCount,
     },
-  })
-  const [status, setStatus] = useState("idle")
-  const [hasUpdates, setHasUpdates] = useState(false)
-  const dispatch = useAppDispatch()
+  });
+  const [status, setStatus] = useState("idle");
+  const [hasUpdates, setHasUpdates] = useState(false);
+  const dispatch = useAppDispatch();
 
   const onSave: SubmitHandler<FlowerInput> = async (flowerUpdate) => {
-    setStatus("loading")
-    const p = await dispatch(updateFlowerAsync({ ...cloneDeep(flower), name: flowerUpdate.name, pricePerBundle: Number(flowerUpdate.price), stemCount: flowerUpdate.count }))
+    setStatus("loading");
+    const p = await dispatch(
+      updateFlowerAsync({
+        ...cloneDeep(flower),
+        name: flowerUpdate.name,
+        pricePerBundle: Number(flowerUpdate.price),
+        stemCount: flowerUpdate.count,
+      })
+    );
     if (p.meta.requestStatus === "rejected") {
-      setStatus("failed")
+      setStatus("failed");
     } else {
-      setHasUpdates(false)
-      setStatus("idle")
+      setHasUpdates(false);
+      setStatus("idle");
     }
-  }
+  };
 
   const onUndo = () => {
-    setHasUpdates(false)
-    setStatus("idle")
-  }
+    setHasUpdates(false);
+    setStatus("idle");
+  };
 
   return (
     <Grid item container sm={12} md={12}>
       <form onSubmit={handleSubmit(onSave)} style={{ width: "100%" }}>
         <Grid item container spacing={2} alignItems="center" sm={12} md={12}>
           <Grid item sm={2} md={2}>
-            <Controller name="name" control={control} rules={{ required: true }} render={({ field }) => <TextField size="small" error={!!errors.name} helperText={errors.name && "Must provide a value"} {...field} />} />
+            <Controller
+              name="name"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextField
+                  size="small"
+                  error={!!errors.name}
+                  helperText={errors.name && "Must provide a value"}
+                  {...field}
+                />
+              )}
+            />
           </Grid>
           <Grid item sm={2} md={2}>
             <Controller
@@ -76,7 +95,19 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
             />
           </Grid>
           <Grid item sm={2} md={2}>
-            <Controller name="count" control={control} rules={{ required: true, min: 1 }} render={({ field }) => <TextField size="small" error={!!errors.name} helperText={errors.name && "Must provide a value"} {...field} />} />
+            <Controller
+              name="count"
+              control={control}
+              rules={{ required: true, min: 1 }}
+              render={({ field }) => (
+                <TextField
+                  size="small"
+                  error={!!errors.name}
+                  helperText={errors.name && "Must provide a value"}
+                  {...field}
+                />
+              )}
+            />
           </Grid>
           <Grid item sm={2} md={2}>
             <Typography>{`$ ${flower.pricePerStem}`}</Typography>
@@ -104,7 +135,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
         </Grid>
       </form>
     </Grid>
-  )
-}
+  );
+};
 
-export default FlowerInputs
+export default FlowerInputs;

@@ -1,25 +1,25 @@
-import { Typography } from "@mui/material"
-import Divider from "@mui/material/Divider"
-import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
-import { RootState } from "../../app/store"
-import { Arrangement } from "../../types/Types"
-import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer"
-import HardGoods from "./HardGoods"
+import { Typography } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { RootState } from "../../app/store";
+import { Arrangement } from "../../types/Types";
+import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
+import HardGoods from "./HardGoods";
 
 interface ArrangementDetailsProps {}
 
 const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
-  let { id } = useParams()
-  const arrangements = useSelector((state: RootState) => state.arrangements.value)
-  const [arrangement, setArrangement] = useState<Arrangement | undefined>(undefined)
+  let { id } = useParams();
+  const arrangements = useSelector((state: RootState) => state.arrangements.value);
+  const [arrangement, setArrangement] = useState<Arrangement | undefined>(undefined);
 
   useEffect(() => {
-    setArrangement(arrangements.find((a) => a.id === Number(id)))
-  }, [id, arrangements])
+    setArrangement(arrangements.find((a) => a.id === Number(id)));
+  }, [id, arrangements]);
 
-  if (!arrangement) return null
+  if (!arrangement) return null;
 
   return (
     <>
@@ -41,7 +41,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         <ArrangementFlowersContainer flowers={arrangement.flowers} />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ArrangementDetails
+export default ArrangementDetails;

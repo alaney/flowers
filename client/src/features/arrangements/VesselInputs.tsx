@@ -1,10 +1,10 @@
-import { Grid, InputAdornment, TextField, Typography } from "@mui/material"
-import React from "react"
+import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import React from "react";
 
 interface VesselInputsProps {
-  type: string
-  count: number
-  cost: number
+  type: string;
+  count: number;
+  cost: number;
 }
 
 const VesselInputs: React.FC<VesselInputsProps> = ({ type, count, cost }) => {
@@ -30,7 +30,7 @@ const VesselInputs: React.FC<VesselInputsProps> = ({ type, count, cost }) => {
         <TextField size="small" label="Quantity" type="number" value={count}></TextField>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default VesselInputs
+export default VesselInputs;

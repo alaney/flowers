@@ -1,23 +1,26 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { Arrangement } from "../../types/Types"
-import { fetchArrangements } from "./arrangementsApi"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Arrangement } from "../../types/Types";
+import { fetchArrangements } from "./arrangementsApi";
 
 export interface ArrangementsState {
-  value: Arrangement[]
-  status: "idle" | "loading" | "failed"
+  value: Arrangement[];
+  status: "idle" | "loading" | "failed";
 }
 
 const initialState: ArrangementsState = {
   value: [],
   status: "idle",
-}
+};
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
-export const getArrangementsAsync = createAsyncThunk("arrangements/fetchArrangements", async () => await fetchArrangements())
+export const getArrangementsAsync = createAsyncThunk(
+  "arrangements/fetchArrangements",
+  async () => await fetchArrangements()
+);
 
 export const arrangementsSlice = createSlice({
   name: "arrangements",
@@ -29,16 +32,16 @@ export const arrangementsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getArrangementsAsync.pending, (state) => {
-        state.status = "loading"
+        state.status = "loading";
       })
       .addCase(getArrangementsAsync.fulfilled, (state, action) => {
-        state.status = "idle"
-        state.value = action.payload
+        state.status = "idle";
+        state.value = action.payload;
       })
       .addCase(getArrangementsAsync.rejected, (state) => {
-        state.status = "failed"
-      })
+        state.status = "failed";
+      });
   },
-})
+});
 
-export default arrangementsSlice.reducer
+export default arrangementsSlice.reducer;

@@ -1,12 +1,12 @@
-import { Grid } from "@mui/material"
-import React from "react"
-import { Arrangement } from "../../types/Types"
-import CardHolderInputs from "./CardHolderInputs"
-import FoamInputs from "./FoamInputs"
-import VesselInputs from "./VesselInputs"
+import { Grid } from "@mui/material";
+import React from "react";
+import { Arrangement } from "../../types/Types";
+import CardHolderInputs from "./CardHolderInputs";
+import FoamInputs from "./FoamInputs";
+import VesselInputs from "./VesselInputs";
 
 interface HardGoodsProps {
-  arrangement: Arrangement
+  arrangement: Arrangement;
 }
 
 const HardGoods: React.FC<HardGoodsProps> = ({ arrangement }) => {
@@ -22,7 +22,7 @@ const HardGoods: React.FC<HardGoodsProps> = ({ arrangement }) => {
         <CardHolderInputs cardHolder={arrangement.cardHolder} />
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default HardGoods
+export default HardGoods;

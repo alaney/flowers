@@ -1,14 +1,14 @@
-import { Grid } from "@mui/material"
-import React from "react"
-import { ArrangementFlower } from "../../types/Types"
-import FlowerArrangementCategory from "./FlowerArrangementCategory"
-import ArrangementFlowers from "./ArrangementFlowers"
+import { Grid } from "@mui/material";
+import React from "react";
+import { ArrangementFlower } from "../../types/Types";
+import FlowerArrangementCategory from "./FlowerArrangementCategory";
+import ArrangementFlowers from "./ArrangementFlowers";
 
 interface ArrangementFlowersContainerProps {
-  flowers: ArrangementFlower[]
+  flowers: ArrangementFlower[];
 }
 
-const categories = ["base", "primary", "filler", "bits"]
+const categories = ["base", "primary", "filler", "bits"];
 
 const ArrangementFlowersContainer: React.FC<ArrangementFlowersContainerProps> = ({ flowers }) => {
   return (
@@ -19,7 +19,7 @@ const ArrangementFlowersContainer: React.FC<ArrangementFlowersContainerProps> = 
         </FlowerArrangementCategory>
       ))}
     </Grid>
-  )
-}
+  );
+};
 
-export default ArrangementFlowersContainer
+export default ArrangementFlowersContainer;

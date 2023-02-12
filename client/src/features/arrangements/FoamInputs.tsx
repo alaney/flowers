@@ -1,8 +1,8 @@
-import React from "react"
-import { Grid, InputAdornment, TextField, Typography } from "@mui/material"
+import React from "react";
+import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 
 interface FoamInputsProps {
-  count: number
+  count: number;
 }
 
 const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
@@ -27,7 +27,7 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
         <TextField size="small" label="Quantity" type="number" value={count}></TextField>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default FoamInputs
+export default FoamInputs;

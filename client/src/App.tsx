@@ -1,7 +1,7 @@
-import { Route, Routes } from "react-router-dom"
-import "./App.css"
-import ArrangementsContainer from "./features/arrangements/ArrangementsContainer"
-import FlowersContainer from "./features/flowers/FlowersContainer"
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import ArrangementsContainer from "./features/arrangements/ArrangementsContainer";
+import FlowersContainer from "./features/flowers/FlowersContainer";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Route path="/flowers" element={<FlowersContainer />}></Route>
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

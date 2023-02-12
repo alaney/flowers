@@ -1,20 +1,23 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { Flower } from "../../types/Types"
-import { fetchFlowers, patchFlower } from "./flowersApi"
-import clonedeep from "lodash.clonedeep"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Flower } from "../../types/Types";
+import { fetchFlowers, patchFlower } from "./flowersApi";
+import clonedeep from "lodash.clonedeep";
 
 export interface FlowersState {
-  value: Flower[]
-  status: "idle" | "loading" | "failed"
+  value: Flower[];
+  status: "idle" | "loading" | "failed";
 }
 
 const initialState: FlowersState = {
   value: [],
   status: "idle",
-}
+};
 
-export const getFlowersAsync = createAsyncThunk("flowers/fetchFlowers", async () => await fetchFlowers())
-export const updateFlowerAsync = createAsyncThunk<Flower, Flower>("flowers/patchFlowers", async (s) => await patchFlower(s))
+export const getFlowersAsync = createAsyncThunk("flowers/fetchFlowers", async () => await fetchFlowers());
+export const updateFlowerAsync = createAsyncThunk<Flower, Flower>(
+  "flowers/patchFlowers",
+  async (s) => await patchFlower(s)
+);
 
 export const flowersSlice = createSlice({
   name: "flowers",
@@ -26,23 +29,23 @@ export const flowersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getFlowersAsync.pending, (state) => {
-        state.status = "loading"
+        state.status = "loading";
       })
       .addCase(getFlowersAsync.fulfilled, (state, action) => {
-        state.status = "idle"
-        state.value = action.payload
+        state.status = "idle";
+        state.value = action.payload;
       })
       .addCase(getFlowersAsync.rejected, (state) => {
-        state.status = "failed"
+        state.status = "failed";
       })
 
       .addCase(updateFlowerAsync.fulfilled, (state, action) => {
-        const updatedState = clonedeep(state.value)
-        const updateIndex = updatedState.findIndex((f) => f.id === action.payload.id)
-        updatedState.splice(updateIndex, 1, action.payload)
-        state.value = updatedState
-      })
+        const updatedState = clonedeep(state.value);
+        const updateIndex = updatedState.findIndex((f) => f.id === action.payload.id);
+        updatedState.splice(updateIndex, 1, action.payload);
+        state.value = updatedState;
+      });
   },
-})
+});
 
-export default flowersSlice.reducer
+export default flowersSlice.reducer;

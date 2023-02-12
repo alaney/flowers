@@ -1,10 +1,10 @@
-import { Grid } from "@mui/material"
-import React from "react"
-import { Flower } from "../../types/Types"
-import FlowerInputs from "./FlowerInputs"
+import { Grid } from "@mui/material";
+import React from "react";
+import { Flower } from "../../types/Types";
+import FlowerInputs from "./FlowerInputs";
 
 interface FlowersListProps {
-  flowers: Flower[]
+  flowers: Flower[];
 }
 
 const FlowersList: React.FC<FlowersListProps> = ({ flowers }) => {
@@ -14,7 +14,7 @@ const FlowersList: React.FC<FlowersListProps> = ({ flowers }) => {
         <FlowerInputs key={f.id} flower={f} />
       ))}
     </Grid>
-  )
-}
+  );
+};
 
-export default FlowersList
+export default FlowersList;

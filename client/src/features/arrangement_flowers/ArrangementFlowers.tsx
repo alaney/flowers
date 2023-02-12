@@ -1,9 +1,9 @@
-import { Grid, TextField } from "@mui/material"
-import React from "react"
-import { ArrangementFlower } from "../../types/Types"
+import { Grid, TextField } from "@mui/material";
+import React from "react";
+import { ArrangementFlower } from "../../types/Types";
 
 interface ArrangementFlowersProps {
-  flowers: ArrangementFlower[]
+  flowers: ArrangementFlower[];
 }
 
 const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ flowers }) => {
@@ -15,7 +15,7 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ flowers }) => {
         </Grid>
       ))}
     </>
-  )
-}
+  );
+};
 
-export default ArrangementFlowers
+export default ArrangementFlowers;

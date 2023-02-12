@@ -1,10 +1,10 @@
-import { List, ListItem, ListItemButton, ListItemText } from "@mui/material"
-import React from "react"
-import { Arrangement } from "../../types/Types"
-import { Link } from "react-router-dom"
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import React from "react";
+import { Arrangement } from "../../types/Types";
+import { Link } from "react-router-dom";
 
 interface ArrangementsListProps {
-  arrangements: Arrangement[]
+  arrangements: Arrangement[];
 }
 
 const ArrangementsList: React.FC<ArrangementsListProps> = ({ arrangements }) => {
@@ -20,7 +20,7 @@ const ArrangementsList: React.FC<ArrangementsListProps> = ({ arrangements }) => 
         </ListItem>
       ))}
     </List>
-  )
-}
+  );
+};
 
-export default ArrangementsList
+export default ArrangementsList;

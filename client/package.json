@@ -52,6 +52,7 @@
   },
   "proxy": "http://localhost/api",
   "devDependencies": {
-    "@types/lodash.clonedeep": "^4.5.7"
+    "@types/lodash.clonedeep": "^4.5.7",
+    "prettier": "2.8.4"
   }
 }

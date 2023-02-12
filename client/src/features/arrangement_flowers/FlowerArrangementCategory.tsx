@@ -1,8 +1,8 @@
-import { Grid, Typography } from "@mui/material"
-import React, { PropsWithChildren } from "react"
+import { Grid, Typography } from "@mui/material";
+import React, { PropsWithChildren } from "react";
 
 interface FlowerArrangementCategoryProps {
-  name: string
+  name: string;
 }
 
 const FlowerArrangementCategory: React.FC<PropsWithChildren<FlowerArrangementCategoryProps>> = ({ children, name }) => {
@@ -15,7 +15,7 @@ const FlowerArrangementCategory: React.FC<PropsWithChildren<FlowerArrangementCat
         {children}
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default FlowerArrangementCategory
+export default FlowerArrangementCategory;
