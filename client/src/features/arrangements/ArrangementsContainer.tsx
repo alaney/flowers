@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ArrangementDetails from "./ArrangementDetails";
+import { resetArrangementDetails } from "./arrangementDetailsSlice";
 import ArrangementsList from "./ArrangementsList";
 import { getArrangementsAsync } from "./arrangementsSlice";
 
@@ -22,6 +23,7 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
   useEffect(() => {
     dispatch(getArrangementsAsync());
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => dispatch(resetArrangementDetails);
   }, []);
 
   if (status === "loading") {

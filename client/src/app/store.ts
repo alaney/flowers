@@ -1,13 +1,15 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
-import arrangementsReducer from "../features/arrangements/arrangementsSlice";
 import flowersReducer from "../features/flowers/flowersSlice";
+import arrangementsReducer from "../features/arrangements/arrangementsSlice";
+import arrangementDetailsReducer from "../features/arrangements/arrangementDetailsSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     arrangements: arrangementsReducer,
     flowers: flowersReducer,
+    arrangementDetails: arrangementDetailsReducer,
   },
 });
 

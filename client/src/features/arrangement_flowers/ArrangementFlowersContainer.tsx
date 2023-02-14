@@ -3,7 +3,6 @@ import React from "react";
 import { ArrangementFlower } from "../../types/Types";
 import FlowerArrangementCategory from "./FlowerArrangementCategory";
 import ArrangementFlowers from "./ArrangementFlowers";
-
 interface ArrangementFlowersContainerProps {
   flowers: ArrangementFlower[];
 }

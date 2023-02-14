@@ -1,12 +1,20 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid, IconButton, TextField } from "@mui/material";
 import React from "react";
 import { ArrangementFlower } from "../../types/Types";
+import AddIcon from "@mui/icons-material/AddCircleSharp";
+import { useAppDispatch } from "../../app/hooks";
+import { addNewFlower } from "../arrangements/arrangementDetailsSlice";
 
 interface ArrangementFlowersProps {
   flowers: ArrangementFlower[];
 }
 
 const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ flowers }) => {
+  const dispatch = useAppDispatch();
+  const addFlower = () => {
+    dispatch(addNewFlower("base"));
+  };
+
   return (
     <>
       {flowers.map((f) => (
@@ -19,6 +27,11 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ flowers }) => {
           </Grid>
         </Grid>
       ))}
+      <Grid item>
+        <IconButton onClick={addFlower}>
+          <AddIcon />
+        </IconButton>
+      </Grid>
     </>
   );
 };

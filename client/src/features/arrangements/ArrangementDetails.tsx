@@ -3,42 +3,49 @@ import Divider from "@mui/material/Divider";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { Arrangement } from "../../types/Types";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
+import { setArrangement } from "./arrangementDetailsSlice";
 import HardGoods from "./HardGoods";
 
 interface ArrangementDetailsProps {}
 
 const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   let { id } = useParams();
+  const dispatch = useAppDispatch();
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
-  const [arrangement, setArrangement] = useState<Arrangement | undefined>(undefined);
+  const selectedArrangement = useSelector((state: RootState) => state.arrangementDetails.value);
+  // const [arrangement, setArrangement] = useState<Arrangement | undefined>(undefined);
 
   useEffect(() => {
-    setArrangement(arrangements.find((a) => a.id === Number(id)));
+    const a = arrangements.find((a) => a.id === Number(id));
+    if (a) {
+      dispatch(setArrangement(a));
+    }
   }, [id, arrangements]);
 
-  if (!arrangement) return null;
+  if (selectedArrangement.id === -1) return null;
 
   return (
     <>
       <Typography variant="h5" component="h1" marginBottom={2}>
-        {arrangement.name}
+        {selectedArrangement.name}
       </Typography>
       <Typography variant="h6" component="h2">
         Hard Goods
       </Typography>
       <Divider />
       <div style={{ margin: "16px 0" }}>
-        <HardGoods arrangement={arrangement} />
+        <HardGoods arrangement={selectedArrangement} />
       </div>
       <Typography variant="h6" component="h2">
         Flowers
       </Typography>
       <Divider />
       <div style={{ margin: "16px 0" }}>
-        <ArrangementFlowersContainer flowers={arrangement.flowers} />
+        <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
       </div>
     </>
   );
