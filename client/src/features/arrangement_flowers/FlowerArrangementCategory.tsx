@@ -11,7 +11,7 @@ const FlowerArrangementCategory: React.FC<PropsWithChildren<FlowerArrangementCat
       <Grid item md={2} sm={2} xs={2}>
         <Typography variant="button">{name}</Typography>
       </Grid>
-      <Grid container item md={2} sm={2} xs={2} rowSpacing={2}>
+      <Grid container item md={10} sm={10} xs={10} rowSpacing={2}>
         {children}
       </Grid>
     </Grid>

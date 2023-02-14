@@ -11,7 +11,7 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
       <Grid item md={2} sm={2} xs={2}>
         <Typography variant="button">foam</Typography>
       </Grid>
-
+      <Grid item md={2} sm={2} xs={2}></Grid>
       <Grid item md={2} sm={2} xs={3}>
         <TextField
           size="small"

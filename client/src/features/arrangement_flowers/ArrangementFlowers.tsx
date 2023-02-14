@@ -10,8 +10,13 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ flowers }) => {
   return (
     <>
       {flowers.map((f) => (
-        <Grid item>
-          <TextField size="small" key={f.id} value={f.name} label="Name"></TextField>
+        <Grid key={f.id} container item md={12} sm={12} xs={12} spacing={2}>
+          <Grid item>
+            <TextField size="small" value={f.name} label="Name"></TextField>
+          </Grid>
+          <Grid item>
+            <TextField size="small" value={f.count} type="number" label="Quantity"></TextField>
+          </Grid>
         </Grid>
       ))}
     </>
