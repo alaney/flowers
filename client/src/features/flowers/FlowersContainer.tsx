@@ -14,8 +14,9 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getFlowersAsync());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (status === "idle") {
+      dispatch(getFlowersAsync());
+    }
   }, []);
 
   if (status === "loading") {
