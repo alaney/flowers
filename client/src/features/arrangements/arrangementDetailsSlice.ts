@@ -1,6 +1,6 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import cloneDeep from "lodash.clonedeep";
-import { Arrangement } from "../../types/Types";
+import { Arrangement, ArrangementFlower } from "../../types/Types";
 
 export interface ArrangementDetailsState {
   value: Arrangement;
@@ -30,7 +30,7 @@ export const arrangementDetailsSlice = createSlice({
   reducers: {
     addNewFlower: (state, action: PayloadAction<string>) => {
       state.value.flowers.push({
-        id: state.value.flowers.length * -1,
+        id: (state.value.flowers.length + 1) * -1,
         name: "",
         count: 1,
         pricePerStem: 0,
@@ -40,10 +40,19 @@ export const arrangementDetailsSlice = createSlice({
     setArrangement: (state, action: PayloadAction<Arrangement>) => {
       state.value = cloneDeep(action.payload);
     },
+    updateFlower: (state, action: PayloadAction<{ old: ArrangementFlower; new: ArrangementFlower }>) => {
+      const theFlower = state.value.flowers.find((f) => f.id === action.payload.old.id);
+      if (theFlower) {
+        theFlower.count = action.payload.new.count;
+        theFlower.name = action.payload.new.name;
+        theFlower.id = action.payload.new.id;
+        theFlower.pricePerStem = action.payload.new.pricePerStem;
+      }
+    },
   },
 });
 
-export const { addNewFlower, setArrangement } = arrangementDetailsSlice.actions;
+export const { addNewFlower, setArrangement, updateFlower } = arrangementDetailsSlice.actions;
 
 export const resetArrangementDetails = (dispatch: Dispatch) => {
   dispatch(setArrangement(initialState.value));

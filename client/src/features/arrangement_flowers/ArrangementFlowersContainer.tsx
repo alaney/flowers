@@ -13,8 +13,8 @@ const ArrangementFlowersContainer: React.FC<ArrangementFlowersContainerProps> = 
   return (
     <Grid container rowSpacing={2}>
       {categories.map((c) => (
-        <FlowerArrangementCategory name={c}>
-          <ArrangementFlowers flowers={flowers.filter((f) => f.category.toLowerCase() === c)} />
+        <FlowerArrangementCategory name={c} key={c}>
+          <ArrangementFlowers arrangementFlowers={flowers.filter((f) => f.category.toLowerCase() === c)} category={c} />
         </FlowerArrangementCategory>
       ))}
     </Grid>

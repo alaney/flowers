@@ -6,6 +6,7 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import { getFlowersAsync } from "../flowers/flowersSlice";
 import ArrangementDetails from "./ArrangementDetails";
 import { resetArrangementDetails } from "./arrangementDetailsSlice";
 import ArrangementsList from "./ArrangementsList";
@@ -22,8 +23,9 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
 
   useEffect(() => {
     dispatch(getArrangementsAsync());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(getFlowersAsync());
     return () => dispatch(resetArrangementDetails);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (status === "loading") {

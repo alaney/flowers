@@ -1,11 +1,10 @@
 import { Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import { Arrangement } from "../../types/Types";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import { setArrangement } from "./arrangementDetailsSlice";
 import HardGoods from "./HardGoods";
@@ -24,7 +23,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     if (a) {
       dispatch(setArrangement(a));
     }
-  }, [id, arrangements]);
+  }, [id, arrangements, dispatch]);
 
   if (selectedArrangement.id === -1) return null;
 
