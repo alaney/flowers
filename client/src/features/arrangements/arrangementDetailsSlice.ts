@@ -1,9 +1,11 @@
-import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import cloneDeep from "lodash.clonedeep";
 import { Arrangement, ArrangementFlower } from "../../types/Types";
+import { patchArrangement } from "./arrangementDetailsApi";
 
 export interface ArrangementDetailsState {
   value: Arrangement;
+  status: "loading" | "idle" | "failed";
 }
 
 const initialState: ArrangementDetailsState = {
@@ -22,10 +24,16 @@ const initialState: ArrangementDetailsState = {
     flowers: [],
     hardGoods: [],
   },
+  status: "idle",
 };
 
+export const updateArrangementAsync = createAsyncThunk<Arrangement, Arrangement>(
+  "arrangement/patchArrangement",
+  async (s) => await patchArrangement(s)
+);
+
 export const arrangementDetailsSlice = createSlice({
-  name: "counter",
+  name: "arrangementDetails",
   initialState,
   reducers: {
     addNewFlower: (state, action: PayloadAction<string>) => {
@@ -49,6 +57,19 @@ export const arrangementDetailsSlice = createSlice({
         theFlower.pricePerStem = action.payload.new.pricePerStem;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateArrangementAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateArrangementAsync.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(updateArrangementAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.value = action.payload;
+      });
   },
 });
 

@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
-import { setArrangement } from "./arrangementDetailsSlice";
+import { setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
+import { getArrangementsAsync } from "./arrangementsSlice";
 import HardGoods from "./HardGoods";
 
 interface ArrangementDetailsProps {}
@@ -24,6 +25,11 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       dispatch(setArrangement(a));
     }
   }, [id, arrangements, dispatch]);
+
+  const onSave = async () => {
+    await dispatch(updateArrangementAsync(selectedArrangement));
+    await dispatch(getArrangementsAsync());
+  };
 
   if (selectedArrangement.id === -1) return null;
 
@@ -46,6 +52,9 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       <div style={{ margin: "16px 0" }}>
         <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
       </div>
+      <Button variant="contained" onClick={onSave} color="success">
+        Save
+      </Button>
     </>
   );
 };

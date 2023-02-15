@@ -23,7 +23,10 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			// updateArrangement(a)
+			updatedArrangement := patchArrangement(a)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(updatedArrangement)
 		}
 	})
 

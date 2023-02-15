@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/lib/pq"
 	_ "github.com/lib/pq"
 )
 
@@ -51,6 +52,30 @@ func getArrangements() []ArrangementDto {
 	}
 
 	return argmtDtos
+}
+
+func getArrangement(id int) ArrangementDto {
+	argmtRows, err := DB.Query("select * from arrangements where id = $1", id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer argmtRows.Close()
+
+	argmtRows.Next()
+	var argmt ArrangementDto
+	err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Cost, &argmt.Json)
+
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+
+	f := getFlowersForArrangement(argmt.Id)
+
+	argmt.Flowers = f
+
+	return argmt
 }
 
 func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
@@ -121,5 +146,51 @@ func patchFlower(flower Flower) Flower {
 	}
 
 	return updatedFlower
+}
 
+func patchArrangement(arrangement ArrangementDto) ArrangementDto {
+	Tx, err := DB.Begin()
+
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+	Tx.Exec("delete from arrangements_flowers where arrangement_id = $1", arrangement.Id)
+
+	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category")
+	stmt, err := Tx.Prepare(s)
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	for _, af := range arrangement.Flowers {
+		_, err = stmt.Exec(af.Id, arrangement.Id, af.Count, af.Category)
+		if err != nil {
+			Tx.Rollback()
+			log.Fatal(err)
+		}
+	}
+
+	_, err = stmt.Exec()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	err = stmt.Close()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	if err == nil {
+		err = Tx.Commit()
+	}
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return getArrangement(arrangement.Id)
 }
