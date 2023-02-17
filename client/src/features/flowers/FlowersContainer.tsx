@@ -1,23 +1,31 @@
-import { Grid, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Divider, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import FlowersList from "./FlowersList";
-import { getFlowersAsync } from "./flowersSlice";
+import Search from "@mui/icons-material/Search";
 
 interface FlowersContainerProps {}
 
 const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   const flowers = useSelector((state: RootState) => state.flowers.value);
   const status = useSelector((state: RootState) => state.flowers.status);
-  const dispatch = useAppDispatch();
+
+  const [filteredFlowers, setFilteredFlowers] = useState(flowers);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(getFlowersAsync());
+    if (!filter) {
+      setFilteredFlowers(flowers);
+    } else {
+      setFilteredFlowers(flowers.filter((f) => f.name.toLowerCase().includes(filter.toLowerCase())));
     }
-  }, []);
+  }, [filter, flowers]);
+
+  const onFilterChanged = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const filter = e.target.value;
+    setFilter(filter);
+  };
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -26,6 +34,24 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   }
   return (
     <>
+      <Grid container justifyContent="center">
+        <Grid item xs={6}>
+          <TextField
+            onChange={onFilterChanged}
+            fullWidth
+            size="small"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+            label="Search"
+          ></TextField>
+        </Grid>
+      </Grid>
+      <Divider style={{ margin: 16 }} />
       <Grid container spacing={1}>
         <Grid item sm={3} xs={3}>
           <Typography variant="button">name</Typography>
@@ -40,7 +66,7 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
           <Typography variant="button">price per stem</Typography>
         </Grid>
       </Grid>
-      <FlowersList flowers={flowers} />
+      <FlowersList flowers={filteredFlowers} />
     </>
   );
 };

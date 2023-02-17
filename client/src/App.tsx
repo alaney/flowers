@@ -1,8 +1,11 @@
 import { Box, Container, Tab, Tabs } from "@mui/material";
+import { useEffect } from "react";
 import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
+import { useAppDispatch } from "./app/hooks";
 import ArrangementsContainer from "./features/arrangements/ArrangementsContainer";
 import FlowersContainer from "./features/flowers/FlowersContainer";
+import { getFlowersAsync } from "./features/flowers/flowersSlice";
 
 function useRouteMatch(patterns: readonly string[]) {
   const { pathname } = useLocation();
@@ -23,8 +26,13 @@ function useRouteMatch(patterns: readonly string[]) {
 function App() {
   const routeMatch = useRouteMatch(["/arrangements*", "/flowers"]);
   const currentTab = routeMatch?.pattern?.path;
+  const dispatch = useAppDispatch();
 
-  console.log("App");
+  useEffect(() => {
+    dispatch(getFlowersAsync());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="App">
       <nav style={{ width: "100%", height: "4rem" }}>
