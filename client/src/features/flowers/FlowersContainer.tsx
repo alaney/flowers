@@ -26,17 +26,17 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   }
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item sm={2} md={2}>
+      <Grid container spacing={1}>
+        <Grid item sm={3} xs={3}>
           <Typography variant="button">name</Typography>
         </Grid>
-        <Grid item sm={2} md={2}>
+        <Grid item sm={3} xs={3}>
           <Typography variant="button">price per bundle</Typography>
         </Grid>
-        <Grid item sm={2} md={2}>
+        <Grid item sm={2} xs={2}>
           <Typography variant="button">stems</Typography>
         </Grid>
-        <Grid item sm={2} md={2}>
+        <Grid item sm={3} xs={2}>
           <Typography variant="button">price per stem</Typography>
         </Grid>
       </Grid>

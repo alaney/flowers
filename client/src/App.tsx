@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Container, Tab, Tabs } from "@mui/material";
 import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import ArrangementsContainer from "./features/arrangements/ArrangementsContainer";
@@ -29,16 +29,18 @@ function App() {
     <div className="App">
       <nav style={{ width: "100%", height: "4rem" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={currentTab}>
+          <Tabs value={currentTab} centered={true}>
             <Tab label="Flowers" value="/flowers" to="/flowers" component={Link} />
             <Tab label="Arrangements" value="/arrangements*" to="/arrangements" component={Link} />
           </Tabs>
         </Box>
       </nav>
-      <Routes>
-        <Route path="/arrangements/*" element={<ArrangementsContainer />}></Route>
-        <Route path="/flowers" element={<FlowersContainer />}></Route>
-      </Routes>
+      <Container>
+        <Routes>
+          <Route path="/arrangements/*" element={<ArrangementsContainer />}></Route>
+          <Route path="/flowers" element={<FlowersContainer />}></Route>
+        </Routes>
+      </Container>
     </div>
   );
 }

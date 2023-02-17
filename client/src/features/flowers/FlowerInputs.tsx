@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { updateFlowerAsync } from "./flowersSlice";
 import cloneDeep from "lodash.clonedeep";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { formatDollar } from "../../app/utils";
 
 interface FlowerInputsProps {
   flower: Flower;
@@ -27,7 +28,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
   } = useForm<FlowerInput>({
     defaultValues: {
       name: flower.name,
-      price: flower.pricePerBundle.toString(),
+      price: formatDollar(flower.pricePerBundle),
       count: flower.stemCount,
     },
   });
@@ -52,10 +53,10 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
   };
 
   return (
-    <Grid item container sm={12} md={12}>
+    <Grid item container sm={12}>
       <form onSubmit={handleSubmit(onSave)} style={{ width: "100%" }}>
-        <Grid item container spacing={2} alignItems="center" sm={12} md={12}>
-          <Grid item sm={2} md={2}>
+        <Grid item container spacing={1} alignItems="center" sm={12}>
+          <Grid item sm={3} xs={3}>
             <Controller
               name="name"
               control={control}
@@ -63,7 +64,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               render={({ field }) => <TextField size="small" error={!!errors.name} {...field} />}
             />
           </Grid>
-          <Grid item sm={2} md={2}>
+          <Grid item sm={3} xs={3}>
             <Controller
               name="price"
               control={control}
@@ -80,7 +81,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               )}
             />
           </Grid>
-          <Grid item sm={2} md={2}>
+          <Grid item sm={2} xs={2}>
             <Controller
               name="count"
               control={control}
@@ -88,21 +89,21 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               render={({ field }) => <TextField size="small" error={!!errors.count} {...field} />}
             />
           </Grid>
-          <Grid item sm={2} md={2}>
-            <Typography>{`$ ${Math.round(flower.pricePerStem * 100) / 100}`}</Typography>
+          <Grid item sm={2} xs={2}>
+            <Typography>{`$ ${formatDollar(flower.pricePerStem)}`}</Typography>
           </Grid>
           {status === "failed" && (
-            <Grid item sm={1} md={1}>
+            <Grid item sm={2} md={2}>
               <Typography>Failed!</Typography>
             </Grid>
           )}
           {isSubmitting && (
-            <Grid item sm={1} md={1}>
+            <Grid item sm={2} md={2}>
               <Typography>Saving...</Typography>
             </Grid>
           )}
           {isDirty && !isSubmitting && (
-            <Grid item sm={1} md={1}>
+            <Grid item sm={2} md={2}>
               <IconButton type="submit">
                 <SaveIcon color="success" />
               </IconButton>
