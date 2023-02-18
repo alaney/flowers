@@ -8,6 +8,8 @@ import (
 func main() {
 	connectDb()
 
+	// http.Handle("/", http.FileServer(http.Dir("./static")))
+
 	http.HandleFunc("/api/arrangements", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {

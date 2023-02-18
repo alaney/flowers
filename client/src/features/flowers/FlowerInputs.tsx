@@ -37,18 +37,21 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
 
   const onSave: SubmitHandler<FlowerInput> = async (flowerUpdate) => {
     setStatus("loading");
-    const p = await dispatch(
-      updateFlowerAsync({
-        ...cloneDeep(flower),
-        name: flowerUpdate.name,
-        pricePerBundle: Number(flowerUpdate.price),
-        stemCount: Number(flowerUpdate.count),
-      })
-    );
-    if (p.meta.requestStatus === "rejected") {
-      setStatus("failed");
+    if (flower.id < 0) {
     } else {
-      reset(flowerUpdate);
+      const p = await dispatch(
+        updateFlowerAsync({
+          ...cloneDeep(flower),
+          name: flowerUpdate.name,
+          pricePerBundle: Number(flowerUpdate.price),
+          stemCount: Number(flowerUpdate.count),
+        })
+      );
+      if (p.meta.requestStatus === "rejected") {
+        setStatus("failed");
+      } else {
+        reset(flowerUpdate);
+      }
     }
   };
 

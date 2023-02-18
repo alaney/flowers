@@ -1,4 +1,4 @@
-import { Divider, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { Button, Divider, Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
@@ -27,6 +27,10 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
     setFilter(filter);
   };
 
+  const onCreate = () => {
+    setFilteredFlowers([{ id: -1, name: "", pricePerBundle: 0, pricePerStem: 0, stemCount: 0 }, ...filteredFlowers]);
+  };
+
   if (status === "loading") {
     return <div>Loading...</div>;
   } else if (status === "failed") {
@@ -34,7 +38,12 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   }
   return (
     <>
-      <Grid container justifyContent="center">
+      <Grid container>
+        <Grid item xs={2} sm={3} onClick={onCreate}>
+          <Button variant="contained" color="primary">
+            Add Flower
+          </Button>
+        </Grid>
         <Grid item xs={6}>
           <TextField
             onChange={onFilterChanged}
