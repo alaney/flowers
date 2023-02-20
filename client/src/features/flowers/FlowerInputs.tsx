@@ -1,4 +1,4 @@
-import { Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Grid, IconButton, InputAdornment, TextField, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Flower } from "../../types/Types";
 import SaveIcon from "@mui/icons-material/Done";
@@ -33,6 +33,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
     },
   });
   const [status, setStatus] = useState("idle");
+  const [editing, setEditing] = useState(flower.id < 0);
   const dispatch = useAppDispatch();
 
   const onSave: SubmitHandler<FlowerInput> = async (flowerUpdate) => {
@@ -48,10 +49,10 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
       );
       if (p.meta.requestStatus === "rejected") {
         setStatus("failed");
+      } else {
+        reset(flowerUpdate);
+        setEditing(false);
       }
-      // } else {
-      //   reset(flowerUpdate);
-      // }
     } else {
       const p = await dispatch(
         updateFlowerAsync({
@@ -65,49 +66,84 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
         setStatus("failed");
       } else {
         reset(flowerUpdate);
+        setEditing(false);
       }
     }
   };
 
   return (
-    <Grid item container sm={12}>
+    <Grid
+      item
+      container
+      sm={12}
+      onClick={() => setEditing(true)}
+      style={{ cursor: editing ? "default" : "pointer", minHeight: 56 }}
+    >
       <form onSubmit={handleSubmit(onSave)} style={{ width: "100%" }}>
         <Grid item container spacing={1} alignItems="center" sm={12}>
           <Grid item sm={3} xs={3}>
-            <Controller
-              name="name"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => <TextField size="small" error={!!errors.name} {...field} />}
-            />
+            {editing ? (
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => <TextField size="small" error={!!errors.name} {...field} />}
+              />
+            ) : (
+              <Tooltip title={flower.name} enterDelay={1000} enterNextDelay={1000} id={flower.id + "tooltip"}>
+                <Typography style={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+                  {flower.name}
+                </Typography>
+              </Tooltip>
+            )}
           </Grid>
           <Grid item sm={3} xs={3}>
-            <Controller
-              name="price"
-              control={control}
-              rules={{ required: true, pattern: /^\d+(\.\d+)?$/ }}
-              render={({ field }) => (
-                <TextField
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                  }}
-                  size="small"
-                  error={!!errors.price}
-                  {...field}
-                />
-              )}
-            />
+            {editing ? (
+              <Controller
+                name="price"
+                control={control}
+                rules={{ required: true, pattern: /^\d+(\.\d+)?$/ }}
+                render={({ field }) => (
+                  <TextField
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
+                    inputProps={{
+                      style: { textAlign: "end" },
+                    }}
+                    size="small"
+                    error={!!errors.price}
+                    {...field}
+                  />
+                )}
+              />
+            ) : (
+              <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flower.pricePerBundle)}`}</Typography>
+            )}
           </Grid>
           <Grid item sm={2} xs={2}>
-            <Controller
-              name="count"
-              control={control}
-              rules={{ required: true, min: 1 }}
-              render={({ field }) => <TextField size="small" error={!!errors.count} {...field} />}
-            />
+            {editing ? (
+              <Controller
+                name="count"
+                control={control}
+                rules={{ required: true, pattern: /^[1-9][0-9]*$/ }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    size="small"
+                    error={!!errors.count}
+                    inputProps={{
+                      style: { textAlign: "end" },
+                    }}
+                  />
+                )}
+              />
+            ) : (
+              <Typography style={{ textAlign: "right" }}>{flower.stemCount}</Typography>
+            )}
           </Grid>
           <Grid item sm={2} xs={2}>
-            <Typography>{`$ ${formatDollar(flower.pricePerStem)}`}</Typography>
+            <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flower.pricePerStem)}`}</Typography>
           </Grid>
           {status === "failed" && (
             <Grid item sm={2} md={2}>

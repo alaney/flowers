@@ -9,7 +9,7 @@ interface FlowersListProps {
 
 const FlowersList: React.FC<FlowersListProps> = ({ flowers }) => {
   return (
-    <Grid container rowSpacing={2}>
+    <Grid container rowSpacing={2} marginTop={0}>
       {flowers.map((f) => (
         <FlowerInputs key={f.id} flower={f} />
       ))}

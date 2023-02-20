@@ -29,7 +29,7 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   };
 
   const onCreate = () => {
-    setFilteredFlowers([{ id: -1, name: "", pricePerBundle: 0, pricePerStem: 0, stemCount: 0 }, ...filteredFlowers]);
+    setFilteredFlowers([{ id: -1, name: "", pricePerBundle: 0, pricePerStem: 0, stemCount: 1 }, ...filteredFlowers]);
   };
 
   if (status === "loading") {
@@ -40,14 +40,14 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
   return (
     <>
       <Grid container>
-        <Grid item xs={2} sm={3} onClick={onCreate}>
+        <Grid item xs={6} sm={3} onClick={onCreate}>
           <Button variant="contained" color="primary">
             Add Flower
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sm={6}>
           <TextField
-            onChange={debounce(onFilterChanged, 350)}
+            onChange={debounce(onFilterChanged, 250)}
             fullWidth
             size="small"
             InputProps={{
@@ -67,13 +67,19 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
           <Typography variant="button">name</Typography>
         </Grid>
         <Grid item sm={3} xs={3}>
-          <Typography variant="button">price per bundle</Typography>
+          <Typography style={{ textAlign: "right", display: "block" }} variant="button">
+            price per bundle
+          </Typography>
         </Grid>
         <Grid item sm={2} xs={2}>
-          <Typography variant="button">stems</Typography>
+          <Typography style={{ textAlign: "right", display: "block" }} variant="button">
+            stems
+          </Typography>
         </Grid>
-        <Grid item sm={3} xs={2}>
-          <Typography variant="button">price per stem</Typography>
+        <Grid item sm={2} xs={2}>
+          <Typography style={{ textAlign: "right", display: "block" }} variant="button">
+            price per stem
+          </Typography>
         </Grid>
       </Grid>
       <FlowersList flowers={filteredFlowers} />
