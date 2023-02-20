@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FlowersList from "./FlowersList";
 import Search from "@mui/icons-material/Search";
+import { debounce } from "lodash";
 
 interface FlowersContainerProps {}
 
@@ -46,7 +47,7 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
         </Grid>
         <Grid item xs={6}>
           <TextField
-            onChange={onFilterChanged}
+            onChange={debounce(onFilterChanged, 350)}
             fullWidth
             size="small"
             InputProps={{
