@@ -14,3 +14,12 @@ export async function patchFlower(flower: Flower): Promise<Flower> {
   const updatedFlower: Flower = await resp.json();
   return updatedFlower;
 }
+
+export async function createFlower(flower: Flower): Promise<Flower> {
+  const resp = await fetch("/api/flowers", {
+    method: "POST",
+    body: JSON.stringify(flower),
+  });
+  const newFlower: Flower = await resp.json();
+  return newFlower;
+}

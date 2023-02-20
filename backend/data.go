@@ -148,6 +148,24 @@ func patchFlower(flower Flower) Flower {
 	return updatedFlower
 }
 
+func createFlower(flower Flower) Flower {
+	flowerRow, err1 := DB.Query("insert into flowers (name, price_per_bundle, stem_count) values ($1, $2, $3) returning *", flower.Name, flower.Price_Per_Bundle, flower.Stem_Count)
+
+	if err1 != nil {
+		log.Fatal(err1)
+	}
+
+	flowerRow.Next()
+	var newFlower Flower
+	err2 := flowerRow.Scan(&newFlower.Id, &newFlower.Name, &newFlower.Price_Per_Bundle, &newFlower.Stem_Count, &newFlower.Price_Per_Stem)
+
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+
+	return newFlower
+}
+
 func patchArrangement(arrangement ArrangementDto) ArrangementDto {
 	Tx, err := DB.Begin()
 

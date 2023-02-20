@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Flower } from "../../types/Types";
-import { fetchFlowers, patchFlower } from "./flowersApi";
+import { createFlower, fetchFlowers, patchFlower } from "./flowersApi";
 import clonedeep from "lodash.clonedeep";
 
 export interface FlowersState {
@@ -17,6 +17,10 @@ export const getFlowersAsync = createAsyncThunk("flowers/fetchFlowers", async ()
 export const updateFlowerAsync = createAsyncThunk<Flower, Flower>(
   "flowers/patchFlowers",
   async (s) => await patchFlower(s)
+);
+export const createFlowerAsync = createAsyncThunk<Flower, Flower>(
+  "flowers/postFlowers",
+  async (s) => await createFlower(s)
 );
 
 export const flowersSlice = createSlice({
@@ -38,12 +42,14 @@ export const flowersSlice = createSlice({
       .addCase(getFlowersAsync.rejected, (state) => {
         state.status = "failed";
       })
-
       .addCase(updateFlowerAsync.fulfilled, (state, action) => {
         const updatedState = clonedeep(state.value);
         const updateIndex = updatedState.findIndex((f) => f.id === action.payload.id);
         updatedState.splice(updateIndex, 1, action.payload);
         state.value = updatedState;
+      })
+      .addCase(createFlowerAsync.fulfilled, (state, action) => {
+        state.value = [action.payload, ...state.value];
       });
   },
 });

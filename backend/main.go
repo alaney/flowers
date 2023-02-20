@@ -51,6 +51,17 @@ func main() {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(updatedFlower)
+		case "POST":
+			decoder := json.NewDecoder(r.Body)
+			var flower Flower
+			err := decoder.Decode(&flower)
+			if err != nil {
+				panic(err)
+			}
+			newFlower := createFlower(flower)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(newFlower)
 		}
 	})
 

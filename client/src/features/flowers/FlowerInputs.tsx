@@ -4,7 +4,7 @@ import { Flower } from "../../types/Types";
 import SaveIcon from "@mui/icons-material/Done";
 import UndoIcon from "@mui/icons-material/Undo";
 import { useAppDispatch } from "../../app/hooks";
-import { updateFlowerAsync } from "./flowersSlice";
+import { createFlowerAsync, updateFlowerAsync } from "./flowersSlice";
 import cloneDeep from "lodash.clonedeep";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { formatDollar } from "../../app/utils";
@@ -38,6 +38,20 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
   const onSave: SubmitHandler<FlowerInput> = async (flowerUpdate) => {
     setStatus("loading");
     if (flower.id < 0) {
+      const p = await dispatch(
+        createFlowerAsync({
+          ...cloneDeep(flower),
+          name: flowerUpdate.name,
+          pricePerBundle: Number(flowerUpdate.price),
+          stemCount: Number(flowerUpdate.count),
+        })
+      );
+      if (p.meta.requestStatus === "rejected") {
+        setStatus("failed");
+      }
+      // } else {
+      //   reset(flowerUpdate);
+      // }
     } else {
       const p = await dispatch(
         updateFlowerAsync({
