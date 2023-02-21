@@ -1,7 +1,7 @@
-import { Grid } from "@mui/material";
+import { Button, Divider, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
@@ -19,12 +19,17 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const status = useSelector((state: RootState) => state.arrangements.status);
   const dispatch = useAppDispatch();
+  const [filteredArrangements, setFilteredArrangements] = useState(arrangements);
 
   useEffect(() => {
     dispatch(getArrangementsAsync());
     return () => dispatch(resetArrangementDetails);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setFilteredArrangements(arrangements);
+  }, [arrangements]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -33,22 +38,32 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
   }
 
   return matches ? (
-    <Grid container spacing={2}>
-      <Grid item md={3}>
-        <Routes>
-          <Route path={"/*"} element={<ArrangementsList arrangements={arrangements} />} />
-        </Routes>
+    <>
+      <Grid container>
+        <Grid item xs={6} sm={3}>
+          <Button variant="contained" color="primary">
+            Add Arrangement
+          </Button>
+        </Grid>
       </Grid>
-      <Grid item md={9}>
-        <Routes>
-          <Route path={"/"} element={<ArrangementDetails />} />
-          <Route path=":id" element={<ArrangementDetails />} />
-        </Routes>
+      <Divider style={{ margin: 16 }} />
+      <Grid container spacing={2}>
+        <Grid item md={3}>
+          <Routes>
+            <Route path={"/*"} element={<ArrangementsList arrangements={filteredArrangements} />} />
+          </Routes>
+        </Grid>
+        <Grid item md={9}>
+          <Routes>
+            <Route path={"/"} element={<ArrangementDetails />} />
+            <Route path=":id" element={<ArrangementDetails />} />
+          </Routes>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   ) : (
     <Routes>
-      <Route path="/" element={<ArrangementsList arrangements={arrangements} />} />
+      <Route path="/" element={<ArrangementsList arrangements={filteredArrangements} />} />
       <Route path="/:id" element={<ArrangementDetails />} />
     </Routes>
   );

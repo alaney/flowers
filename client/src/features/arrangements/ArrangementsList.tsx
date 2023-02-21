@@ -9,10 +9,10 @@ interface ArrangementsListProps {
 
 const ArrangementsList: React.FC<ArrangementsListProps> = ({ arrangements }) => {
   return (
-    <List>
+    <List disablePadding>
       {arrangements.map((a) => (
-        <ListItem key={a.id} disablePadding>
-          <Link to={`/arrangements/${a.id}`}>
+        <ListItem key={a.id}>
+          <Link to={`/arrangements/${a.id}`} style={{ textDecoration: "none", color: "inherit", width: "100%" }}>
             <ListItemButton>
               <ListItemText primary={a.name} />
             </ListItemButton>

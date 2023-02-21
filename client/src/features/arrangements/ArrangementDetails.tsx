@@ -1,5 +1,6 @@
-import { Typography, Button } from "@mui/material";
+import { Typography, Button, useMediaQuery, useTheme } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField/TextField";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -14,10 +15,12 @@ interface ArrangementDetailsProps {}
 
 const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   let { id } = useParams();
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const selectedArrangement = useSelector((state: RootState) => state.arrangementDetails.value);
   // const [arrangement, setArrangement] = useState<Arrangement | undefined>(undefined);
+  const matches = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
     const a = arrangements.find((a) => a.id === Number(id));
@@ -35,9 +38,12 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   return (
     <>
-      <Typography variant="h5" component="h1" marginBottom={2}>
-        {selectedArrangement.name}
-      </Typography>
+      <TextField
+        style={{ marginBottom: 16 }}
+        variant="standard"
+        value={selectedArrangement.name}
+        inputProps={{ style: { fontSize: 32 } }}
+      ></TextField>
       <Typography variant="h6" component="h2">
         Hard Goods
       </Typography>
@@ -52,9 +58,22 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       <div style={{ margin: "16px 0" }}>
         <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
       </div>
-      <Button variant="contained" onClick={onSave} color="success">
-        Save
-      </Button>
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: matches ? "unset" : 0,
+          backgroundColor: "white",
+          width: matches ? "-webkit-fill-available" : "100vw",
+          paddingBottom: 8,
+          zIndex: 1,
+        }}
+      >
+        <Divider style={{ margin: " 0 0 8px" }} />
+        <Button style={{ marginLeft: 8 }} variant="contained" onClick={onSave} color="success">
+          Save
+        </Button>
+      </div>
     </>
   );
 };
