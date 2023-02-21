@@ -17,14 +17,6 @@ const HardGoods: React.FC<HardGoodsProps> = ({ arrangement }) => {
       <CardHolderInputs cardHolder={arrangement.cardHolder} />
     </Grid>
   );
-  //     <Grid item sm={12} md={12}>
-  //     </Grid>
-  //     <Grid item sm={12} md={12}>
-  //     </Grid>
-  //     <Grid item sm={12} md={12}>
-  //     </Grid>
-  //   </Grid>
-  // );
 };
 
 export default HardGoods;
