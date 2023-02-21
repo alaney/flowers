@@ -9,8 +9,8 @@ interface VesselInputsProps {
 
 const VesselInputs: React.FC<VesselInputsProps> = ({ type, count, cost }) => {
   return (
-    <Grid container spacing={2} alignItems="center">
-      <Grid item md={2} sm={2} xs={2}>
+    <Grid item container spacing={2} alignItems="center">
+      <Grid item md={2} sm={2} xs={3}>
         <Typography variant="button">vessel</Typography>
       </Grid>
       <Grid item md={2} sm={2} xs={3}>

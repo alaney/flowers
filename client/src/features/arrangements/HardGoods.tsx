@@ -12,17 +12,19 @@ interface HardGoodsProps {
 const HardGoods: React.FC<HardGoodsProps> = ({ arrangement }) => {
   return (
     <Grid container rowSpacing={2}>
-      <Grid item sm={12} md={12}>
-        <VesselInputs type={arrangement.vesselType} count={arrangement.vesselCount} cost={arrangement.vesselCost} />
-      </Grid>
-      <Grid item sm={12} md={12}>
-        <FoamInputs count={arrangement.foamCount} />
-      </Grid>
-      <Grid item sm={12} md={12}>
-        <CardHolderInputs cardHolder={arrangement.cardHolder} />
-      </Grid>
+      <VesselInputs type={arrangement.vesselType} count={arrangement.vesselCount} cost={arrangement.vesselCost} />
+      <FoamInputs count={arrangement.foamCount} />
+      <CardHolderInputs cardHolder={arrangement.cardHolder} />
     </Grid>
   );
+  //     <Grid item sm={12} md={12}>
+  //     </Grid>
+  //     <Grid item sm={12} md={12}>
+  //     </Grid>
+  //     <Grid item sm={12} md={12}>
+  //     </Grid>
+  //   </Grid>
+  // );
 };
 
 export default HardGoods;
