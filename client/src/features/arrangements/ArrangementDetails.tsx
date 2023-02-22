@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { formatDollar } from "../../app/utils";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
+import Subtotal from "../Subtotal/Subtotal";
 import { initialState, setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
 import { getArrangementsAsync } from "./arrangementsSlice";
 import HardGoods from "./HardGoods";
@@ -60,6 +61,13 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       <Divider />
       <div style={{ margin: "16px 0" }}>
         <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
+      </div>
+      <Typography variant="h6" component="h2">
+        Numberidoos
+      </Typography>
+      <Divider />
+      <div style={{ margin: "16px 0" }}>
+        <Subtotal arrangement={selectedArrangement} />
       </div>
       <div
         style={{
