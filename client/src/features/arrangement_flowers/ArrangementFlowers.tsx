@@ -55,8 +55,8 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ arrangementFlow
   return (
     <>
       {arrangementFlowers.map((af) => (
-        <Grid key={af.id} container item md={12} sm={12} xs={12} spacing={2} alignItems="center">
-          <Grid item md={4} sm={4} xs={4}>
+        <Grid key={af.id} container item spacing={2} alignItems="center">
+          <Grid item md={4} sm={6} xs={9}>
             <Autocomplete
               disablePortal
               id={"flower-name-" + af.id}
@@ -67,7 +67,7 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ arrangementFlow
               isOptionEqualToValue={isFlowerOptionEqual}
             />
           </Grid>
-          <Grid item>
+          <Grid item md={4} sm={6} xs={3}>
             <TextField
               onChange={(e) => onCountUpdated(e, af)}
               size="small"
@@ -77,9 +77,9 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ arrangementFlow
               inputProps={{ min: "0" }}
             ></TextField>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Typography>{`$ ${Math.round(af.pricePerStem * af.count * 100) / 100}`}</Typography>
-          </Grid>
+          </Grid> */}
         </Grid>
       ))}
       <Grid item>

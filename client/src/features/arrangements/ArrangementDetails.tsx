@@ -1,11 +1,12 @@
-import { Typography, Button, useMediaQuery, useTheme } from "@mui/material";
+import { Typography, Button, useMediaQuery, useTheme, Grid } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField/TextField";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import { formatDollar } from "../../app/utils";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import { initialState, setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
 import { getArrangementsAsync } from "./arrangementsSlice";
@@ -20,6 +21,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const selectedArrangement = useSelector((state: RootState) => state.arrangementDetails.value);
   const matches = useMediaQuery(theme.breakpoints.up("md"));
+  const [subTotal, setSubTotal] = useState(0);
 
   useEffect(() => {
     const a = arrangements.find((a) => a.id === Number(id));
@@ -38,7 +40,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   if (selectedArrangement.id === -1 && id !== "new") return null;
 
   return (
-    <>
+    <div style={{ marginBottom: 56 }}>
       <TextField
         style={{ marginBottom: 16 }}
         variant="standard"
@@ -71,11 +73,22 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         }}
       >
         <Divider style={{ margin: " 0 0 8px" }} />
-        <Button style={{ marginLeft: 8 }} variant="contained" onClick={onSave} color="success">
-          Save
-        </Button>
+        <Grid container alignItems="center">
+          <Grid item xs={3}>
+            <Button style={{ marginLeft: 8 }} variant="contained" onClick={onSave} color="success">
+              Save
+            </Button>
+          </Grid>
+          <Grid item xs={3}></Grid>
+          <Grid item xs={3}>
+            <div>{`$ ${formatDollar(subTotal)}`}</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div>{`$ ${formatDollar(subTotal * 1.09)}`}</div>
+          </Grid>
+        </Grid>
       </div>
-    </>
+    </div>
   );
 };
 
