@@ -58,7 +58,7 @@ type ArrangementDto struct {
 	Name         string                 `json:"name"`
 	Vessel_Type  string                 `json:"vesselType"`
 	Vessel_Count int                    `json:"vesselCount"`
-	Vessel_Cost  float32                `json:"vesselCost"`
+	Vessel_Price float32                `json:"vesselCost"`
 	Foam_Count   int                    `json:"foamCount"`
 	Card_Holder  bool                   `json:"cardHolder"`
 	Venmo        bool                   `json:"venmo"`

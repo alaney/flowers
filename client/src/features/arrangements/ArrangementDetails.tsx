@@ -9,7 +9,12 @@ import { RootState } from "../../app/store";
 import { calculateSubtotals, formatDollar } from "../../app/utils";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import Subtotal from "../Subtotal/Subtotal";
-import { initialState, setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
+import {
+  createArrangementAsync,
+  initialState,
+  setArrangement,
+  updateArrangementAsync,
+} from "./arrangementDetailsSlice";
 import { getArrangementsAsync } from "./arrangementsSlice";
 import HardGoods from "./HardGoods";
 
@@ -42,7 +47,11 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   }, [selectedArrangement]);
 
   const onSave = async () => {
-    await dispatch(updateArrangementAsync(selectedArrangement));
+    if (selectedArrangement.id === -1 || id === "new") {
+      await dispatch(createArrangementAsync(selectedArrangement));
+    } else {
+      await dispatch(updateArrangementAsync(selectedArrangement));
+    }
     await dispatch(getArrangementsAsync());
   };
 
@@ -50,26 +59,29 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   return (
     <div style={{ marginBottom: 56 }}>
-      <TextField
-        style={{ marginBottom: 16 }}
-        variant="standard"
-        value={selectedArrangement.name}
-        inputProps={{ style: { fontSize: 32 } }}
-      ></TextField>
-      <Typography variant="h6" component="h2">
-        Hard Goods
-      </Typography>
-      <Divider />
-      <div style={{ margin: "16px 0" }}>
-        <HardGoods arrangement={selectedArrangement} />
-      </div>
-      <Typography variant="h6" component="h2">
-        Flowers
-      </Typography>
-      <Divider />
-      <div style={{ margin: "16px 0" }}>
-        <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
-      </div>
+      <form>
+        <TextField
+          style={{ marginBottom: 16 }}
+          variant="standard"
+          value={selectedArrangement.name}
+          inputProps={{ style: { fontSize: 32 } }}
+        ></TextField>
+        <Typography variant="h6" component="h2">
+          Hard Goods
+        </Typography>
+        <Divider />
+        <div style={{ margin: "16px 0" }}>
+          <HardGoods arrangement={selectedArrangement} />
+        </div>
+        <Typography variant="h6" component="h2">
+          Flowers
+        </Typography>
+        <Divider />
+        <div style={{ margin: "16px 0" }}>
+          <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
+        </div>
+      </form>
+
       <Typography variant="h6" component="h2">
         Numberidoos
       </Typography>
@@ -78,6 +90,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         <Subtotal arrangement={selectedArrangement} />
       </div>
       <div
+        className="noprint"
         style={{
           position: "fixed",
           bottom: 0,

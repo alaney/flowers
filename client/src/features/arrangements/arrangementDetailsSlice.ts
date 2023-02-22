@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import cloneDeep from "lodash.clonedeep";
 import { Arrangement, ArrangementFlower } from "../../types/Types";
-import { patchArrangement } from "./arrangementDetailsApi";
+import { patchArrangement, postArrangement } from "./arrangementDetailsApi";
 
 export interface ArrangementDetailsState {
   value: Arrangement;
@@ -30,6 +30,10 @@ export const initialState: ArrangementDetailsState = {
 export const updateArrangementAsync = createAsyncThunk<Arrangement, Arrangement>(
   "arrangement/patchArrangement",
   async (s) => await patchArrangement(s)
+);
+export const createArrangementAsync = createAsyncThunk<Arrangement, Arrangement>(
+  "arrangement/postArrangement",
+  async (s) => await postArrangement(s)
 );
 
 export const arrangementDetailsSlice = createSlice({
@@ -67,6 +71,16 @@ export const arrangementDetailsSlice = createSlice({
         state.status = "failed";
       })
       .addCase(updateArrangementAsync.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.value = action.payload;
+      })
+      .addCase(createArrangementAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createArrangementAsync.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(createArrangementAsync.fulfilled, (state, action) => {
         state.status = "idle";
         state.value = action.payload;
       });

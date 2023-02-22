@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav style={{ width: "100%", height: "4rem" }}>
+      <nav className="noprint" style={{ width: "100%", height: "4rem" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={currentTab} centered={true}>
             <Tab label="Flowers" value="/flowers" to="/flowers" component={Link} />

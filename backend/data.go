@@ -38,7 +38,7 @@ func getArrangements() []ArrangementDto {
 
 	for argmtRows.Next() {
 		var argmt ArrangementDto
-		err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Cost, &argmt.Json)
+		err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Price, &argmt.Json)
 
 		if err2 != nil {
 			log.Fatal(err2)
@@ -65,7 +65,7 @@ func getArrangement(id int) ArrangementDto {
 
 	argmtRows.Next()
 	var argmt ArrangementDto
-	err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Cost, &argmt.Json)
+	err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Price, &argmt.Json)
 
 	if err2 != nil {
 		log.Fatal(err2)
@@ -166,8 +166,115 @@ func createFlower(flower Flower) Flower {
 	return newFlower
 }
 
+func postArrangement(arrangement ArrangementDto) ArrangementDto {
+	Tx, err := DB.Begin()
+
+	var arrId int
+	err = Tx.QueryRow(`insert into arrangements 
+		(name, 
+		vessel_type, 
+		vessel_count, 
+		vessel_price, 
+		foam_count, 
+		card_holder, 
+		venmo,
+		paypal,
+		done,
+		json)
+		values (
+			$1,
+			$2,
+			$3,
+			$4,
+			$5,
+			$6,
+			$7,
+			$8,
+			$9,
+			$10
+		) returning id`,
+		arrangement.Name,
+		arrangement.Vessel_Type,
+		arrangement.Vessel_Count,
+		arrangement.Vessel_Price,
+		arrangement.Foam_Count,
+		arrangement.Card_Holder,
+		arrangement.Venmo,
+		arrangement.Paypal,
+		arrangement.Done,
+		arrangement.Json).Scan(&arrId)
+
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category")
+	stmt, err := Tx.Prepare(s)
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	for _, af := range arrangement.Flowers {
+		_, err = stmt.Exec(af.Id, arrId, af.Count, af.Category)
+		if err != nil {
+			Tx.Rollback()
+			log.Fatal(err)
+		}
+	}
+
+	_, err = stmt.Exec()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	err = stmt.Close()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	if err == nil {
+		err = Tx.Commit()
+	}
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return getArrangement(arrId)
+}
+
 func patchArrangement(arrangement ArrangementDto) ArrangementDto {
 	Tx, err := DB.Begin()
+
+	_, err = Tx.Exec(`update arrangements 
+						set 
+							name = $1, 
+							vessel_type = $2, 
+							vessel_count = $3, 
+							vessel_price = $4, 
+							foam_count = $5, 
+							card_holder = $6, 
+							venmo = $7,
+							paypal = $8,
+							done = $9,
+							json = $10
+						where
+							id = $11`,
+		arrangement.Name,
+		arrangement.Vessel_Type,
+		arrangement.Vessel_Count,
+		arrangement.Vessel_Price,
+		arrangement.Foam_Count,
+		arrangement.Card_Holder,
+		arrangement.Venmo,
+		arrangement.Paypal,
+		arrangement.Done,
+		arrangement.Json,
+		arrangement.Id)
 
 	if err != nil {
 		Tx.Rollback()

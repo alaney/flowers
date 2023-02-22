@@ -29,6 +29,17 @@ func main() {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(updatedArrangement)
+		case "POST":
+			decoder := json.NewDecoder(r.Body)
+			var a ArrangementDto
+			err := decoder.Decode(&a)
+			if err != nil {
+				panic(err)
+			}
+			updatedArrangement := postArrangement(a)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(updatedArrangement)
 		}
 	})
 
