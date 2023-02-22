@@ -47,6 +47,7 @@ func getArrangements() []ArrangementDto {
 		f := getFlowersForArrangement(argmt.Id)
 
 		argmt.Flowers = f
+		argmt.Hard_Goods = []HardGood{}
 
 		argmtDtos = append(argmtDtos, argmt)
 	}
