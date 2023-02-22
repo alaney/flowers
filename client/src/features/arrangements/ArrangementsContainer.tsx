@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ArrangementDetails from "./ArrangementDetails";
@@ -41,9 +41,11 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
     <>
       <Grid container>
         <Grid item xs={6} sm={3}>
-          <Button variant="contained" color="primary">
-            Add Arrangement
-          </Button>
+          <Link to="/arrangements/new">
+            <Button variant="contained" color="primary">
+              Add Arrangement
+            </Button>
+          </Link>
         </Grid>
       </Grid>
       <Divider style={{ margin: 16 }} />

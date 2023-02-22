@@ -8,7 +8,7 @@ export interface ArrangementDetailsState {
   status: "loading" | "idle" | "failed";
 }
 
-const initialState: ArrangementDetailsState = {
+export const initialState: ArrangementDetailsState = {
   value: {
     id: -1,
     name: "",

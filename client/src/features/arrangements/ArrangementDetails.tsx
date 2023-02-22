@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
-import { setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
+import { initialState, setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
 import { getArrangementsAsync } from "./arrangementsSlice";
 import HardGoods from "./HardGoods";
 
@@ -19,13 +19,14 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   const dispatch = useAppDispatch();
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const selectedArrangement = useSelector((state: RootState) => state.arrangementDetails.value);
-  // const [arrangement, setArrangement] = useState<Arrangement | undefined>(undefined);
   const matches = useMediaQuery(theme.breakpoints.up("md"));
 
   useEffect(() => {
     const a = arrangements.find((a) => a.id === Number(id));
     if (a) {
       dispatch(setArrangement(a));
+    } else if (id === "new") {
+      dispatch(setArrangement({ ...initialState.value }));
     }
   }, [id, arrangements, dispatch]);
 
@@ -34,7 +35,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     await dispatch(getArrangementsAsync());
   };
 
-  if (selectedArrangement.id === -1) return null;
+  if (selectedArrangement.id === -1 && id !== "new") return null;
 
   return (
     <>
