@@ -22,7 +22,7 @@ const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ cardHolder }) => {
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
-          value={"?"}
+          value={"0.30"}
         ></TextField>
       </Grid>
     </Grid>

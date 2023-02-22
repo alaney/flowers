@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import { formatDollar } from "../../app/utils";
+import { calculateSubtotals, formatDollar } from "../../app/utils";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import Subtotal from "../Subtotal/Subtotal";
 import { initialState, setArrangement, updateArrangementAsync } from "./arrangementDetailsSlice";
@@ -22,7 +22,11 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const selectedArrangement = useSelector((state: RootState) => state.arrangementDetails.value);
   const matches = useMediaQuery(theme.breakpoints.up("md"));
-  const [subTotal, setSubTotal] = useState(0);
+  const [subTotals, setSubTotals] = useState({
+    taxTotal: 0,
+    venmoTotal: 0,
+    paypalTotal: 0,
+  });
 
   useEffect(() => {
     const a = arrangements.find((a) => a.id === Number(id));
@@ -32,6 +36,10 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       dispatch(setArrangement({ ...initialState.value }));
     }
   }, [id, arrangements, dispatch]);
+
+  useEffect(() => {
+    setSubTotals(calculateSubtotals(selectedArrangement));
+  }, [selectedArrangement]);
 
   const onSave = async () => {
     await dispatch(updateArrangementAsync(selectedArrangement));
@@ -89,10 +97,13 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           </Grid>
           <Grid item xs={3}></Grid>
           <Grid item xs={3}>
-            <div>{`$ ${formatDollar(subTotal)}`}</div>
+            <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
           </Grid>
           <Grid item xs={3}>
-            <div>{`$ ${formatDollar(subTotal * 1.09)}`}</div>
+            <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
+          </Grid>
+          <Grid item xs={3}>
+            <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
           </Grid>
         </Grid>
       </div>

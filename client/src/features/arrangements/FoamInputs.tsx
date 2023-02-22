@@ -20,7 +20,7 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
-          value={"?"}
+          value={"1.00"}
         ></TextField>
       </Grid>
       <Grid item md={2} sm={2} xs={3}>
