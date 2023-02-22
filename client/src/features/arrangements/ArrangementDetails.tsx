@@ -95,7 +95,6 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
               Save
             </Button>
           </Grid>
-          <Grid item xs={3}></Grid>
           <Grid item xs={3}>
             <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
           </Grid>

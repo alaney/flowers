@@ -121,7 +121,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flower.pricePerBundle)}`}</Typography>
             )}
           </Grid>
-          <Grid item sm={2} xs={2}>
+          <Grid item sm={3} xs={3}>
             {editing ? (
               <Controller
                 name="count"
@@ -142,7 +142,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               <Typography style={{ textAlign: "right" }}>{flower.stemCount}</Typography>
             )}
           </Grid>
-          <Grid item sm={2} xs={2}>
+          <Grid item sm={3} xs={3}>
             <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flower.pricePerStem)}`}</Typography>
           </Grid>
           {status === "failed" && (

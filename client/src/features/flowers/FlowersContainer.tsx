@@ -71,12 +71,12 @@ const FlowersContainer: React.FC<FlowersContainerProps> = () => {
             price per bundle
           </Typography>
         </Grid>
-        <Grid item sm={2} xs={2}>
+        <Grid item sm={3} xs={3}>
           <Typography style={{ textAlign: "right", display: "block" }} variant="button">
             stems
           </Typography>
         </Grid>
-        <Grid item sm={2} xs={2}>
+        <Grid item sm={3} xs={3}>
           <Typography style={{ textAlign: "right", display: "block" }} variant="button">
             price per stem
           </Typography>

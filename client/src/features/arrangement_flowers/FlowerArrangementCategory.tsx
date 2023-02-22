@@ -8,8 +8,10 @@ interface FlowerArrangementCategoryProps {
 const FlowerArrangementCategory: React.FC<PropsWithChildren<FlowerArrangementCategoryProps>> = ({ children, name }) => {
   return (
     <>
-      <Typography variant="button">{name}</Typography>
       <Grid container item>
+        <Typography marginTop={1} marginBottom={1} variant="button">
+          {name}
+        </Typography>
         <Grid container item rowSpacing={2}>
           {children}
         </Grid>
