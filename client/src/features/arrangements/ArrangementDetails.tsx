@@ -2,6 +2,7 @@ import { Typography, Button, useMediaQuery, useTheme, Grid } from "@mui/material
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField/TextField";
 import React, { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
@@ -33,6 +34,17 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     paypalTotal: 0,
   });
 
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<{ name: string }>({
+    defaultValues: {
+      name: selectedArrangement.name,
+    },
+  });
+
   useEffect(() => {
     const a = arrangements.find((a) => a.id === Number(id));
     if (a) {
@@ -44,13 +56,14 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   useEffect(() => {
     setSubTotals(calculateSubtotals(selectedArrangement));
-  }, [selectedArrangement]);
+    reset({ name: selectedArrangement.name });
+  }, [selectedArrangement, reset]);
 
-  const onSave = async () => {
+  const onSave: SubmitHandler<{ name: string }> = async (arrangementUpdates) => {
     if (selectedArrangement.id === -1 || id === "new") {
-      await dispatch(createArrangementAsync(selectedArrangement));
+      await dispatch(createArrangementAsync({ ...selectedArrangement, name: arrangementUpdates.name }));
     } else {
-      await dispatch(updateArrangementAsync(selectedArrangement));
+      await dispatch(updateArrangementAsync({ ...selectedArrangement, name: arrangementUpdates.name }));
     }
     await dispatch(getArrangementsAsync());
   };
@@ -59,13 +72,22 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   return (
     <div style={{ marginBottom: 56 }}>
-      <form>
-        <TextField
-          style={{ marginBottom: 16 }}
-          variant="standard"
-          value={selectedArrangement.name}
-          inputProps={{ style: { fontSize: 32 } }}
-        ></TextField>
+      <form onSubmit={handleSubmit(onSave)}>
+        <Controller
+          name="name"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <TextField
+              style={{ marginBottom: 16 }}
+              variant="standard"
+              error={!!errors.name}
+              inputProps={{ style: { fontSize: 32 } }}
+              {...field}
+            />
+          )}
+        />
+
         <Typography variant="h6" component="h2">
           Hard Goods
         </Typography>
@@ -80,45 +102,45 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         <div style={{ margin: "16px 0" }}>
           <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
         </div>
-      </form>
 
-      <Typography variant="h6" component="h2">
-        Numberidoos
-      </Typography>
-      <Divider />
-      <div style={{ margin: "16px 0" }}>
-        <Subtotal arrangement={selectedArrangement} />
-      </div>
-      <div
-        className="noprint"
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: matches ? "unset" : 0,
-          backgroundColor: "white",
-          width: matches ? "-webkit-fill-available" : "100vw",
-          paddingBottom: 8,
-          zIndex: 1,
-        }}
-      >
-        <Divider style={{ margin: " 0 0 8px" }} />
-        <Grid container alignItems="center">
-          <Grid item xs={3}>
-            <Button style={{ marginLeft: 8 }} variant="contained" onClick={onSave} color="success">
-              Save
-            </Button>
+        <Typography variant="h6" component="h2">
+          Numberidoos
+        </Typography>
+        <Divider />
+        <div style={{ margin: "16px 0" }}>
+          <Subtotal arrangement={selectedArrangement} />
+        </div>
+        <div
+          className="noprint"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: matches ? "unset" : 0,
+            backgroundColor: "white",
+            width: matches ? "-webkit-fill-available" : "100vw",
+            paddingBottom: 8,
+            zIndex: 1,
+          }}
+        >
+          <Divider style={{ margin: " 0 0 8px" }} />
+          <Grid container alignItems="center">
+            <Grid item xs={3}>
+              <Button style={{ marginLeft: 8 }} variant="contained" color="success" type="submit">
+                Save
+              </Button>
+            </Grid>
+            <Grid item xs={3}>
+              <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
+            </Grid>
+            <Grid item xs={3}>
+              <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
+            </Grid>
+            <Grid item xs={3}>
+              <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
-          </Grid>
-          <Grid item xs={3}>
-            <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
-          </Grid>
-          <Grid item xs={3}>
-            <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
-          </Grid>
-        </Grid>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
