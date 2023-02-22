@@ -31,7 +31,7 @@ const calculateFlowersSubtotal = (arrangement: Arrangement): number => {
 const calculateHardGoodsSubtotal = (arrangement: Arrangement): number => {
   let subTotal = arrangement.vesselCost * arrangement.vesselCount;
   subTotal += arrangement.foamCount * 1;
-  subTotal += arrangement.cardHolder ? 0 : 0.3;
+  subTotal += arrangement.cardHolder ? 0.3 : 0;
   if (arrangement.hardGoods) {
     subTotal += arrangement.hardGoods.reduce<number>((a, h) => {
       a += h.price;

@@ -74,6 +74,7 @@ func getArrangement(id int) ArrangementDto {
 	f := getFlowersForArrangement(argmt.Id)
 
 	argmt.Flowers = f
+	argmt.Hard_Goods = []HardGood{}
 
 	return argmt
 }
@@ -87,7 +88,7 @@ func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
 
 	defer argmtFlowerRows.Close()
 
-	var flowers []ArrangementFlowerDto
+	flowers := []ArrangementFlowerDto{}
 	for argmtFlowerRows.Next() {
 		var flower ArrangementFlowerDto
 		err := argmtFlowerRows.Scan(&flower.Id, &flower.Name, &flower.Count, &flower.Category, &flower.Price_Per_Stem)

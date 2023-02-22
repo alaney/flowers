@@ -39,9 +39,10 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm<{ name: string }>({
+  } = useForm<{ name: string; vesselType: string }>({
     defaultValues: {
       name: selectedArrangement.name,
+      vesselType: selectedArrangement.vesselType,
     },
   });
 
@@ -56,14 +57,26 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   useEffect(() => {
     setSubTotals(calculateSubtotals(selectedArrangement));
-    reset({ name: selectedArrangement.name });
+    reset({ name: selectedArrangement.name, vesselType: selectedArrangement.vesselType });
   }, [selectedArrangement, reset]);
 
-  const onSave: SubmitHandler<{ name: string }> = async (arrangementUpdates) => {
+  const onSave: SubmitHandler<{ name: string; vesselType: string }> = async (arrangementUpdates) => {
     if (selectedArrangement.id === -1 || id === "new") {
-      await dispatch(createArrangementAsync({ ...selectedArrangement, name: arrangementUpdates.name }));
+      await dispatch(
+        createArrangementAsync({
+          ...selectedArrangement,
+          name: arrangementUpdates.name,
+          vesselType: arrangementUpdates.vesselType,
+        })
+      );
     } else {
-      await dispatch(updateArrangementAsync({ ...selectedArrangement, name: arrangementUpdates.name }));
+      await dispatch(
+        updateArrangementAsync({
+          ...selectedArrangement,
+          name: arrangementUpdates.name,
+          vesselType: arrangementUpdates.vesselType,
+        })
+      );
     }
     await dispatch(getArrangementsAsync());
   };
@@ -93,7 +106,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         </Typography>
         <Divider />
         <div style={{ margin: "16px 0" }}>
-          <HardGoods arrangement={selectedArrangement} />
+          <HardGoods arrangement={selectedArrangement} control={control} errors={errors} />
         </div>
         <Typography variant="h6" component="h2">
           Flowers
