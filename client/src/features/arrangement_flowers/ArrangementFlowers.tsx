@@ -1,4 +1,4 @@
-import { Autocomplete, Grid, IconButton, TextField, Typography } from "@mui/material";
+import { Autocomplete, Grid, IconButton, TextField } from "@mui/material";
 import React from "react";
 import { ArrangementFlower } from "../../types/Types";
 import AddIcon from "@mui/icons-material/AddCircleSharp";

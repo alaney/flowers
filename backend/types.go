@@ -28,9 +28,9 @@ type Multiplier struct {
 }
 
 type HardGood struct {
-	id    int
-	name  string
-	price float32
+	Id    int     `json:"id"`
+	Name  string  `json:"name"`
+	Price float32 `json:"price"`
 }
 
 type Arrangement_HardGood struct {

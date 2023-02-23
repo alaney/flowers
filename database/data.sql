@@ -24,21 +24,6 @@ INSERT INTO public.arrangements VALUES (1, 'bridal bouquet', 'vase', 1, 1, true,
 
 
 --
--- Data for Name: arrangements_flowers; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.arrangements_flowers VALUES (1, 1, 3, 'Base')
-INSERT INTO public.arrangements_flowers VALUES (2, 1, 2, 'Base')
-
---
--- Data for Name: arrangements_hard_goods; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-INSERT INTO public.arrangements_hard_goods VALUES (1, 1);
-INSERT INTO public.arrangements_hard_goods VALUES (1, 2);
-
-
---
 -- Data for Name: flowers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -152,9 +137,12 @@ INSERT INTO public.flowers VALUES (300, 'Autumn Willow asdf', 30, 15, DEFAULT);
 -- Data for Name: hard_goods; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.hard_goods VALUES (1, 'wire', 0.33);
-INSERT INTO public.hard_goods VALUES (2, 'ribbon', 1);
+--
+-- Data for Name: arrangements_flowers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
+INSERT INTO public.arrangements_flowers VALUES (1, 1, 3, 'Base');
+INSERT INTO public.arrangements_flowers VALUES (2, 1, 2, 'Base');
 
 --
 -- Data for Name: multipliers; Type: TABLE DATA; Schema: public; Owner: postgres

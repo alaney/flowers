@@ -45,9 +45,10 @@ func getArrangements() []ArrangementDto {
 		}
 
 		f := getFlowersForArrangement(argmt.Id)
+		h := getHardGoodsForArrangement(argmt.Id)
 
 		argmt.Flowers = f
-		argmt.Hard_Goods = []HardGood{}
+		argmt.Hard_Goods = h
 
 		argmtDtos = append(argmtDtos, argmt)
 	}
@@ -73,9 +74,10 @@ func getArrangement(id int) ArrangementDto {
 	}
 
 	f := getFlowersForArrangement(argmt.Id)
+	h := getHardGoodsForArrangement(argmt.Id)
 
 	argmt.Flowers = f
-	argmt.Hard_Goods = []HardGood{}
+	argmt.Hard_Goods = h
 
 	return argmt
 }
@@ -104,9 +106,29 @@ func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
 	return flowers
 }
 
-// func updateArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
-// 	DB.Query("update arrangements")
-// }
+func getHardGoodsForArrangement(arrangement_id int) []HardGood {
+	hardGoodRows, err := DB.Query("select id, name, price from hard_goods where arrangement_id = $1", arrangement_id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer hardGoodRows.Close()
+
+	hardGoods := []HardGood{}
+	for hardGoodRows.Next() {
+		var hardGood HardGood
+		err := hardGoodRows.Scan(&hardGood.Id, &hardGood.Name, &hardGood.Price)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		hardGoods = append(hardGoods, hardGood)
+	}
+
+	return hardGoods
+}
 
 func getFlowers() []Flower {
 	flowerRows, err := DB.Query("select * from flowers order by name")
@@ -238,6 +260,33 @@ func postArrangement(arrangement ArrangementDto) ArrangementDto {
 		log.Fatal(err)
 	}
 
+	h := pq.CopyIn("hard_goods", "arrangement_id", "name", "price")
+	stmt2, err := Tx.Prepare(h)
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	for _, hg := range arrangement.Hard_Goods {
+		_, err = stmt2.Exec(arrId, hg.Name, hg.Price)
+		if err != nil {
+			Tx.Rollback()
+			log.Fatal(err)
+		}
+	}
+
+	_, err = stmt2.Exec()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	err = stmt2.Close()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
 	if err == nil {
 		err = Tx.Commit()
 	}
@@ -306,6 +355,35 @@ func patchArrangement(arrangement ArrangementDto) ArrangementDto {
 	}
 
 	err = stmt.Close()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	Tx.Exec("delete from hard_goods where arrangement_id = $1", arrangement.Id)
+
+	h := pq.CopyIn("hard_goods", "arrangement_id", "name", "price")
+	stmt2, err := Tx.Prepare(h)
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	for _, hg := range arrangement.Hard_Goods {
+		_, err = stmt2.Exec(arrangement.Id, hg.Name, hg.Price)
+		if err != nil {
+			Tx.Rollback()
+			log.Fatal(err)
+		}
+	}
+
+	_, err = stmt2.Exec()
+	if err != nil {
+		Tx.Rollback()
+		log.Fatal(err)
+	}
+
+	err = stmt2.Close()
 	if err != nil {
 		Tx.Rollback()
 		log.Fatal(err)

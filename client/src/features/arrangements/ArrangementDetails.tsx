@@ -62,7 +62,6 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   useEffect(() => {
     const subscription = watch((value) => {
-      console.log(value);
       setSubTotals(
         calculateSubtotals({
           ...selectedArrangement,
