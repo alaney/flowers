@@ -8,7 +8,6 @@ interface CardHolderInputsProps {
 }
 
 const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ control }) => {
-  console.log("ehllo");
   return (
     <Grid item container spacing={2} alignItems="center">
       <Grid item md={2} sm={2} xs={3}>
@@ -19,7 +18,6 @@ const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ control }) => {
           name="cardHolder"
           control={control}
           render={({ field: props }) => {
-            console.log(control._fields["cardHolder"]?._f.value);
             return <Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />;
           }}
         />

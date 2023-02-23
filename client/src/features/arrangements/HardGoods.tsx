@@ -9,17 +9,18 @@ import MiscellaneousHardGoods from "./MiscellaneousHardGoods";
 import VesselInputs from "./VesselInputs";
 
 interface HardGoodsProps {
+  arrangement: Arrangement;
   control: Control<ArrangementUpdates, any>;
   errors: FieldErrors<ArrangementUpdates>;
 }
 
-const HardGoods: React.FC<HardGoodsProps> = ({ control, errors }) => {
+const HardGoods: React.FC<HardGoodsProps> = ({ control, errors, arrangement }) => {
   return (
     <Grid container rowSpacing={2}>
       <VesselInputs control={control} errors={errors} />
       <FoamInputs control={control} errors={errors} />
       <CardHolderInputs key={control._formValues["cardHolder"]} control={control} />
-      <MiscellaneousHardGoods />
+      <MiscellaneousHardGoods miscellaneousHardGoods={arrangement.hardGoods} />
     </Grid>
   );
 };

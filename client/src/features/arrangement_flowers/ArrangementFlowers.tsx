@@ -77,9 +77,6 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ arrangementFlow
               inputProps={{ min: "0" }}
             ></TextField>
           </Grid>
-          {/* <Grid item>
-            <Typography>{`$ ${Math.round(af.pricePerStem * af.count * 100) / 100}`}</Typography>
-          </Grid> */}
         </Grid>
       ))}
       <Grid item>

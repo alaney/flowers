@@ -148,7 +148,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         </Typography>
         <Divider />
         <div style={{ margin: "16px 0" }}>
-          <HardGoods control={control} errors={errors} />
+          <HardGoods arrangement={selectedArrangement} control={control} errors={errors} />
         </div>
         <Typography variant="h6" component="h2">
           Flowers
