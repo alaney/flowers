@@ -46,6 +46,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     handleSubmit,
     control,
     reset,
+    watch,
     formState: { errors },
   } = useForm<ArrangementUpdates>({
     defaultValues: {
@@ -56,6 +57,24 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       cardHolder: selectedArrangement.cardHolder,
     },
   });
+
+  const watchAllFields = watch();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+      setSubTotals(
+        calculateSubtotals({
+          ...selectedArrangement,
+          foamCount: Number(value.foamCount || 0),
+          vesselCount: Number(value.vesselCount || 0),
+          vesselCost: Number(value.vesselCost || 0),
+          cardHolder: !!value.cardHolder,
+        })
+      );
+    });
+    return () => subscription.unsubscribe();
+  }, [watchAllFields]);
 
   useEffect(() => {
     const a = arrangements.find((a) => a.id === Number(id));
@@ -86,7 +105,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           foamCount: Number(arrangementUpdates.foamCount),
           vesselCount: Number(arrangementUpdates.vesselCount),
           vesselCost: Number(arrangementUpdates.vesselCost),
-          cardHolder: !!arrangementUpdates.cardHolder,
+          cardHolder: arrangementUpdates.cardHolder,
         })
       );
     } else {
@@ -97,7 +116,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           foamCount: Number(arrangementUpdates.foamCount),
           vesselCount: Number(arrangementUpdates.vesselCount),
           vesselCost: Number(arrangementUpdates.vesselCost),
-          cardHolder: !!arrangementUpdates.cardHolder,
+          cardHolder: arrangementUpdates.cardHolder,
         })
       );
     }
@@ -138,7 +157,6 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         <div style={{ margin: "16px 0" }}>
           <ArrangementFlowersContainer flowers={selectedArrangement.flowers} />
         </div>
-
         <Typography variant="h6" component="h2">
           Numberidoos
         </Typography>
