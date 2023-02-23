@@ -1,18 +1,28 @@
 import React from "react";
-import { Checkbox, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { Checkbox, Grid, InputAdornment, Switch, TextField, Typography } from "@mui/material";
+import { Control, Controller } from "react-hook-form";
+import { ArrangementUpdates } from "./ArrangementDetails";
 
 interface CardHolderInputsProps {
-  cardHolder: boolean;
+  control: Control<ArrangementUpdates, any>;
 }
 
-const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ cardHolder }) => {
+const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ control }) => {
+  console.log("ehllo");
   return (
     <Grid item container spacing={2} alignItems="center">
       <Grid item md={2} sm={2} xs={3}>
         <Typography variant="button">card holder</Typography>
       </Grid>
       <Grid item md={2} sm={2} xs={3}>
-        <Checkbox checked={cardHolder}></Checkbox>
+        <Controller
+          name="cardHolder"
+          control={control}
+          render={({ field: props }) => {
+            console.log(control._fields["cardHolder"]?._f.value);
+            return <Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />;
+          }}
+        />
       </Grid>
       <Grid item md={2} sm={2} xs={3}>
         <TextField

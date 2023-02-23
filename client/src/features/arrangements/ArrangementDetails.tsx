@@ -20,6 +20,14 @@ import { getArrangementsAsync } from "./arrangementsSlice";
 import HardGoods from "./HardGoods";
 
 interface ArrangementDetailsProps {}
+export interface ArrangementUpdates {
+  name: string;
+  vesselType: string;
+  vesselCount: number;
+  vesselCost: number;
+  foamCount: number;
+  cardHolder: boolean;
+}
 
 const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   let { id } = useParams();
@@ -39,10 +47,13 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm<{ name: string; vesselType: string }>({
+  } = useForm<ArrangementUpdates>({
     defaultValues: {
       name: selectedArrangement.name,
       vesselType: selectedArrangement.vesselType,
+      foamCount: selectedArrangement.foamCount,
+      vesselCost: selectedArrangement.vesselCost,
+      cardHolder: selectedArrangement.cardHolder,
     },
   });
 
@@ -57,24 +68,36 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   useEffect(() => {
     setSubTotals(calculateSubtotals(selectedArrangement));
-    reset({ name: selectedArrangement.name, vesselType: selectedArrangement.vesselType });
+    reset({
+      name: selectedArrangement.name,
+      vesselType: selectedArrangement.vesselType,
+      foamCount: selectedArrangement.foamCount,
+      vesselCount: selectedArrangement.vesselCount,
+      cardHolder: selectedArrangement.cardHolder,
+    });
   }, [selectedArrangement, reset]);
 
-  const onSave: SubmitHandler<{ name: string; vesselType: string }> = async (arrangementUpdates) => {
+  const onSave: SubmitHandler<ArrangementUpdates> = async (arrangementUpdates) => {
     if (selectedArrangement.id === -1 || id === "new") {
       await dispatch(
         createArrangementAsync({
           ...selectedArrangement,
-          name: arrangementUpdates.name,
-          vesselType: arrangementUpdates.vesselType,
+          ...arrangementUpdates,
+          foamCount: Number(arrangementUpdates.foamCount),
+          vesselCount: Number(arrangementUpdates.vesselCount),
+          vesselCost: Number(arrangementUpdates.vesselCost),
+          cardHolder: !!arrangementUpdates.cardHolder,
         })
       );
     } else {
       await dispatch(
         updateArrangementAsync({
           ...selectedArrangement,
-          name: arrangementUpdates.name,
-          vesselType: arrangementUpdates.vesselType,
+          ...arrangementUpdates,
+          foamCount: Number(arrangementUpdates.foamCount),
+          vesselCount: Number(arrangementUpdates.vesselCount),
+          vesselCost: Number(arrangementUpdates.vesselCost),
+          cardHolder: !!arrangementUpdates.cardHolder,
         })
       );
     }
@@ -106,7 +129,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         </Typography>
         <Divider />
         <div style={{ margin: "16px 0" }}>
-          <HardGoods arrangement={selectedArrangement} control={control} errors={errors} />
+          <HardGoods control={control} errors={errors} />
         </div>
         <Typography variant="h6" component="h2">
           Flowers

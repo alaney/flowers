@@ -1,11 +1,14 @@
 import React from "react";
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { ArrangementUpdates } from "./ArrangementDetails";
 
 interface FoamInputsProps {
-  count: number;
+  control: Control<ArrangementUpdates, any>;
+  errors: FieldErrors<ArrangementUpdates>;
 }
 
-const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
+const FoamInputs: React.FC<FoamInputsProps> = ({ control, errors }) => {
   return (
     <Grid item container spacing={2} alignItems="center">
       <Grid item md={2} sm={2} xs={3}>
@@ -24,7 +27,14 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ count }) => {
         ></TextField>
       </Grid>
       <Grid item md={2} sm={2} xs={3}>
-        <TextField size="small" label="Quantity" type="number" value={count}></TextField>
+        <Controller
+          name="foamCount"
+          control={control}
+          rules={{ required: false, pattern: /^[0-9]*$/ }}
+          render={({ field }) => (
+            <TextField {...field} size="small" label="Quantity" error={!!errors.foamCount}></TextField>
+          )}
+        />
       </Grid>
     </Grid>
   );
