@@ -77,7 +77,6 @@ func main() {
 		}
 	})
 
-	// http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fs := http.FileServer(http.Dir("./static/"))
 		// If the requested file exists then return if; otherwise return index.html (fileserver default page)
@@ -93,7 +92,6 @@ func main() {
 			}
 		}
 		fs.ServeHTTP(w, r)
-		// http.FileServer(http.Dir("./static"))
 	})
 
 	http.ListenAndServe(":8888", nil)
