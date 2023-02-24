@@ -1,14 +1,13 @@
 import { Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React from "react";
-import { calculateSubtotals, formatDollar } from "../../app/utils";
-import { Arrangement } from "../../types/Types";
+import { ArrangementSubtotals, formatDollar } from "../../app/utils";
 
 interface SubtotalProps {
-  arrangement: Arrangement;
+  subtotals: ArrangementSubtotals;
 }
 
-const Subtotal: React.FC<SubtotalProps> = ({ arrangement }) => {
+const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
   const {
     flowersSubtotal,
     hardGoodsSubtotal,
@@ -19,7 +18,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ arrangement }) => {
     taxTotal,
     venmoTotal,
     paypalTotal,
-  } = calculateSubtotals(arrangement);
+  } = subtotals;
   return (
     <Grid container>
       <Grid container item>

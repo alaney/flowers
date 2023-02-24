@@ -4,7 +4,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../app/store";
-import { calculateSubtotals, formatDollar } from "../../app/utils";
+import { ArrangementSubtotals, calculateSubtotals, formatDollar } from "../../app/utils";
 import { Arrangement, ArrangementFlower, HardGood } from "../../types/Types";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import Subtotal from "../Subtotal/Subtotal";
@@ -20,7 +20,7 @@ export interface ArrangementUpdates {
   cardHolder: boolean;
   hardGoods: HardGood[];
   flowers: {
-    base: ArrangementFlower[];
+    base: Required<ArrangementFlower>[];
     primary: ArrangementFlower[];
     filler: ArrangementFlower[];
     bits: ArrangementFlower[];
@@ -49,9 +49,15 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   const [arrangement, setArrangement] = useState(initialArrangement);
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const matches = useMediaQuery(theme.breakpoints.up("md"));
-  const [subTotals, setSubTotals] = useState({
+  const [subTotals, setSubTotals] = useState<ArrangementSubtotals>({
+    flowersSubtotal: 0,
+    hardGoodsSubtotal: 0,
+    laborSubtotal: 0,
+    taxSubtotal: 0,
     taxTotal: 0,
     venmoTotal: 0,
+    venmoSubtotal: 0,
+    paypalSubtotal: 0,
     paypalTotal: 0,
   });
 
@@ -59,6 +65,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     handleSubmit,
     control,
     reset,
+    watch,
     formState: { errors },
   } = useForm<ArrangementUpdates>({
     defaultValues: {
@@ -68,8 +75,40 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       vesselCost: arrangement.vesselCost,
       cardHolder: arrangement.cardHolder,
       hardGoods: arrangement.hardGoods,
+      flowers: {
+        base: arrangement.flowers.filter((f) => f.category === "base"),
+        primary: arrangement.flowers.filter((f) => f.category === "primary"),
+        filler: arrangement.flowers.filter((f) => f.category === "filler"),
+        bits: arrangement.flowers.filter((f) => f.category === "bits"),
+      },
     },
   });
+
+  const watchAllFields = watch();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      const hg = value.hardGoods as HardGood[];
+      const combinedFlowers: ArrangementFlower[] = [
+        ...(value.flowers?.base as any),
+        ...(value.flowers?.primary as any),
+        ...(value.flowers?.bits as any),
+        ...(value.flowers?.filler as any),
+      ];
+      setSubTotals(
+        calculateSubtotals({
+          ...arrangement,
+          flowers: combinedFlowers,
+          hardGoods: hg,
+          foamCount: Number(value.foamCount || 0),
+          vesselCount: Number(value.vesselCount || 0),
+          vesselCost: Number(value.vesselCost || 0),
+          cardHolder: !!value.cardHolder,
+        })
+      );
+    });
+    return () => subscription.unsubscribe();
+  }, [watchAllFields]);
 
   useEffect(() => {
     setSubTotals(calculateSubtotals(arrangement));
@@ -80,6 +119,12 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       vesselCount: arrangement.vesselCount,
       cardHolder: arrangement.cardHolder,
       hardGoods: arrangement.hardGoods,
+      flowers: {
+        base: arrangement.flowers.filter((f) => f.category === "base"),
+        primary: arrangement.flowers.filter((f) => f.category === "primary"),
+        filler: arrangement.flowers.filter((f) => f.category === "filler"),
+        bits: arrangement.flowers.filter((f) => f.category === "bits"),
+      },
     });
   }, [arrangement, reset]);
 
@@ -134,7 +179,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
         </Typography>
         <Divider />
         <div style={{ margin: "16px 0" }}>
-          <Subtotal arrangement={arrangement} />
+          <Subtotal subtotals={subTotals} />
         </div>
         <div
           className="noprint"

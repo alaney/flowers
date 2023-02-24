@@ -21,22 +21,25 @@ export const debounce = (func: (...args: any[]) => void, wait: number) => {
 
 const calculateFlowersSubtotal = (arrangement: Arrangement): number => {
   const flowers = arrangement.flowers;
-  return flowers.reduce<number>((a, f) => {
-    const price = f.pricePerStem * f.count;
-    a += price;
-    return a;
-  }, 0);
+  return (
+    flowers.reduce<number>((a, f) => {
+      const price = f.pricePerStem * f.count;
+      a += price;
+      return a;
+    }, 0) * 2
+  );
 };
 
 const calculateHardGoodsSubtotal = (arrangement: Arrangement): number => {
-  let subTotal = arrangement.vesselCost * arrangement.vesselCount;
-  subTotal += arrangement.foamCount * 1;
-  subTotal += arrangement.cardHolder ? 0.3 : 0;
+  let subTotal = arrangement.vesselCost * arrangement.vesselCount * 2;
+  subTotal += arrangement.foamCount * 1 * 2;
+  subTotal += arrangement.cardHolder ? 0.3 * 2 : 0;
   if (arrangement.hardGoods) {
-    subTotal += arrangement.hardGoods.reduce<number>((a, h) => {
-      a += h.price;
-      return a;
-    }, 0);
+    subTotal +=
+      arrangement.hardGoods.reduce<number>((a, h) => {
+        a += h.price;
+        return a;
+      }, 0) * 2;
   }
 
   return subTotal;
