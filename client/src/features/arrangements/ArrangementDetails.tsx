@@ -4,10 +4,11 @@ import TextField from "@mui/material/TextField/TextField";
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { calculateSubtotals, formatDollar } from "../../app/utils";
+import { Arrangement } from "../../types/Types";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import Subtotal from "../Subtotal/Subtotal";
 import {
@@ -31,6 +32,7 @@ export interface ArrangementUpdates {
 
 const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   let { id } = useParams();
+  const navigate = useNavigate();
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
@@ -97,7 +99,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   const onSave: SubmitHandler<ArrangementUpdates> = async (arrangementUpdates) => {
     if (selectedArrangement.id === -1 || id === "new") {
-      await dispatch(
+      const resp = await dispatch(
         createArrangementAsync({
           ...selectedArrangement,
           ...arrangementUpdates,
@@ -107,8 +109,16 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           cardHolder: arrangementUpdates.cardHolder,
         })
       );
+      if (resp.meta.requestStatus === "fulfilled") {
+        if (resp.payload && resp.payload) {
+          const p = resp.payload as Arrangement;
+          const id = p.id;
+          navigate("/arrangements/" + id, { replace: true });
+          await dispatch(getArrangementsAsync());
+        }
+      }
     } else {
-      await dispatch(
+      const resp = await dispatch(
         updateArrangementAsync({
           ...selectedArrangement,
           ...arrangementUpdates,
@@ -118,8 +128,11 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           cardHolder: arrangementUpdates.cardHolder,
         })
       );
+
+      if (resp.meta.requestStatus === "fulfilled") {
+        await dispatch(getArrangementsAsync());
+      }
     }
-    await dispatch(getArrangementsAsync());
   };
 
   if (selectedArrangement.id === -1 && id !== "new") return null;

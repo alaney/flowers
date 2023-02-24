@@ -11,8 +11,12 @@ export async function patchFlower(flower: Flower): Promise<Flower> {
     method: "PATCH",
     body: JSON.stringify(flower),
   });
-  const updatedFlower: Flower = await resp.json();
-  return updatedFlower;
+  if (resp.status === 200) {
+    const updatedFlower: Flower = await resp.json();
+    return updatedFlower;
+  } else {
+    throw new Error("Error");
+  }
 }
 
 export async function createFlower(flower: Flower): Promise<Flower> {
@@ -20,6 +24,10 @@ export async function createFlower(flower: Flower): Promise<Flower> {
     method: "POST",
     body: JSON.stringify(flower),
   });
-  const newFlower: Flower = await resp.json();
-  return newFlower;
+  if (resp.status === 200) {
+    const newFlower: Flower = await resp.json();
+    return newFlower;
+  } else {
+    throw new Error("error");
+  }
 }
