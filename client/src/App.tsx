@@ -1,6 +1,6 @@
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { useEffect } from "react";
-import { Link, matchPath, Route, Routes, useLocation } from "react-router-dom";
+import { Link, matchPath, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import { useAppDispatch } from "./app/hooks";
 import ArrangementsContainer from "./features/arrangements/ArrangementsContainer";
@@ -43,8 +43,9 @@ function App() {
       </nav>
       <Container>
         <Routes>
-          <Route path="/arrangements/*" element={<ArrangementsContainer />}></Route>
+          <Route index path="/arrangements/*" element={<ArrangementsContainer />}></Route>
           <Route path="/flowers" element={<FlowersContainer />}></Route>
+          <Route path="*" element={<Navigate to="/arrangements" replace />} />
         </Routes>
       </Container>
     </div>
