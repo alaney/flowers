@@ -2,12 +2,15 @@ import { Button, Divider, Grid, TextField, Typography, useMediaQuery, useTheme }
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { ArrangementSubtotals, calculateSubtotals, formatDollar } from "../../app/utils";
 import { Arrangement, ArrangementFlower, HardGood } from "../../types/Types";
 import ArrangementFlowersContainer from "../arrangement_flowers/ArrangementFlowersContainer";
 import Subtotal from "../Subtotal/Subtotal";
+import { patchArrangement, postArrangement } from "./arrangementDetailsApi";
+import { getArrangementsAsync } from "./arrangementsSlice";
 import HardGoods from "./HardGoods";
 
 interface ArrangementDetailsProps {}
@@ -46,6 +49,8 @@ const initialArrangement: Arrangement = {
 const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   const { id: paramId } = useParams();
   const theme = useTheme();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [arrangement, setArrangement] = useState(initialArrangement);
   const arrangements = useSelector((state: RootState) => state.arrangements.value);
   const matches = useMediaQuery(theme.breakpoints.up("md"));
@@ -138,7 +143,59 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
   }, [paramId, arrangements]);
 
   const onSave: SubmitHandler<ArrangementUpdates> = async (arrangementUpdates) => {
-    console.log(arrangementUpdates);
+    const mapper = (b: ArrangementFlower) => ({
+      id: b.id,
+      name: b.name,
+      count: Number(b.count),
+      pricePerStem: Number(b.pricePerStem),
+      category: b.category,
+    });
+    const base = arrangementUpdates.flowers?.base.map<ArrangementFlower>(mapper);
+    const primary = arrangementUpdates.flowers?.primary.map<ArrangementFlower>(mapper);
+    const bits = arrangementUpdates.flowers?.bits.map<ArrangementFlower>(mapper);
+    const filler = arrangementUpdates.flowers?.filler.map<ArrangementFlower>(mapper);
+
+    const combinedFlowers: ArrangementFlower[] = [...base, ...primary, ...filler, ...bits];
+    const hgs = arrangementUpdates.hardGoods.map<HardGood>((h) => ({
+      id: h.id,
+      price: Number(h.price),
+      name: h.name,
+    }));
+    if (arrangement.id === -1 || paramId === "new") {
+      try {
+        const newArr = await postArrangement({
+          ...arrangement,
+          ...arrangementUpdates,
+          flowers: combinedFlowers,
+          hardGoods: hgs,
+          foamCount: Number(arrangementUpdates.foamCount),
+          vesselCount: Number(arrangementUpdates.vesselCount),
+          vesselCost: Number(arrangementUpdates.vesselCost),
+          cardHolder: arrangementUpdates.cardHolder,
+        });
+        const id = newArr.id;
+        navigate("/arrangements/" + id, { replace: true });
+        await dispatch(getArrangementsAsync());
+      } catch {
+        alert("error");
+      }
+    } else {
+      try {
+        await patchArrangement({
+          ...arrangement,
+          ...arrangementUpdates,
+          flowers: combinedFlowers,
+          hardGoods: arrangementUpdates.hardGoods,
+          foamCount: Number(arrangementUpdates.foamCount),
+          vesselCount: Number(arrangementUpdates.vesselCount),
+          vesselCost: Number(arrangementUpdates.vesselCost),
+          cardHolder: arrangementUpdates.cardHolder,
+        });
+        await dispatch(getArrangementsAsync());
+      } catch {
+        alert("error");
+      }
+    }
   };
 
   if (arrangement.id === -1 && paramId !== "new") return null;
