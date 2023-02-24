@@ -25,11 +25,12 @@ func connectDb() {
 	DB = db
 }
 
-func getArrangements() []ArrangementDto {
+func getArrangements() ([]ArrangementDto, error) {
 	argmtRows, err := DB.Query("select * from arrangements")
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	defer argmtRows.Close()
@@ -38,14 +39,19 @@ func getArrangements() []ArrangementDto {
 
 	for argmtRows.Next() {
 		var argmt ArrangementDto
-		err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Price, &argmt.Json)
+		err := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Price, &argmt.Json)
 
-		if err2 != nil {
-			log.Fatal(err2)
+		if err != nil {
+			log.Println(err)
+			return nil, err
 		}
 
-		f := getFlowersForArrangement(argmt.Id)
-		h := getHardGoodsForArrangement(argmt.Id)
+		f, err := getFlowersForArrangement(argmt.Id)
+		h, err := getHardGoodsForArrangement(argmt.Id)
+
+		if err != nil {
+			return nil, err
+		}
 
 		argmt.Flowers = f
 		argmt.Hard_Goods = h
@@ -53,40 +59,48 @@ func getArrangements() []ArrangementDto {
 		argmtDtos = append(argmtDtos, argmt)
 	}
 
-	return argmtDtos
+	return argmtDtos, nil
 }
 
-func getArrangement(id int) ArrangementDto {
+func getArrangement(id int) (ArrangementDto, error) {
 	argmtRows, err := DB.Query("select * from arrangements where id = $1", id)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	defer argmtRows.Close()
 
 	argmtRows.Next()
 	var argmt ArrangementDto
-	err2 := argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Price, &argmt.Json)
+	err = argmtRows.Scan(&argmt.Id, &argmt.Name, &argmt.Vessel_Type, &argmt.Vessel_Count, &argmt.Foam_Count, &argmt.Card_Holder, &argmt.Venmo, &argmt.Paypal, &argmt.Done, &argmt.Vessel_Price, &argmt.Json)
 
-	if err2 != nil {
-		log.Fatal(err2)
+	if err != nil {
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
-	f := getFlowersForArrangement(argmt.Id)
-	h := getHardGoodsForArrangement(argmt.Id)
+	f, err := getFlowersForArrangement(argmt.Id)
+	h, err := getHardGoodsForArrangement(argmt.Id)
+
+	if err != nil {
+		log.Println(err)
+		return ArrangementDto{}, err
+	}
 
 	argmt.Flowers = f
 	argmt.Hard_Goods = h
 
-	return argmt
+	return argmt, nil
 }
 
-func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
+func getFlowersForArrangement(arrangement_id int) ([]ArrangementFlowerDto, error) {
 	argmtFlowerRows, err := DB.Query("select f.id, f.name, af.count, af.category, f.price_per_stem from arrangements_flowers af, flowers f where af.arrangement_id = $1 and af.flower_id = f.id", arrangement_id)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	defer argmtFlowerRows.Close()
@@ -97,20 +111,22 @@ func getFlowersForArrangement(arrangement_id int) []ArrangementFlowerDto {
 		err := argmtFlowerRows.Scan(&flower.Id, &flower.Name, &flower.Count, &flower.Category, &flower.Price_Per_Stem)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 
 		flowers = append(flowers, flower)
 	}
 
-	return flowers
+	return flowers, nil
 }
 
-func getHardGoodsForArrangement(arrangement_id int) []HardGood {
+func getHardGoodsForArrangement(arrangement_id int) ([]HardGood, error) {
 	hardGoodRows, err := DB.Query("select id, name, price from hard_goods where arrangement_id = $1", arrangement_id)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	defer hardGoodRows.Close()
@@ -121,20 +137,22 @@ func getHardGoodsForArrangement(arrangement_id int) []HardGood {
 		err := hardGoodRows.Scan(&hardGood.Id, &hardGood.Name, &hardGood.Price)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 
 		hardGoods = append(hardGoods, hardGood)
 	}
 
-	return hardGoods
+	return hardGoods, nil
 }
 
-func getFlowers() []Flower {
+func getFlowers() ([]Flower, error) {
 	flowerRows, err := DB.Query("select * from flowers order by name")
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	defer flowerRows.Close()
@@ -145,52 +163,57 @@ func getFlowers() []Flower {
 		err := flowerRows.Scan(&flower.Id, &flower.Name, &flower.Price_Per_Bundle, &flower.Stem_Count, &flower.Price_Per_Stem)
 
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			return nil, err
 		}
 
 		flowers = append(flowers, flower)
 	}
 
-	return flowers
+	return flowers, nil
 }
 
-func patchFlower(flower Flower) Flower {
-	flowerRow, err1 := DB.Query("update flowers set name = $1, price_per_bundle = $2, stem_count = $3 where id = $4 returning *", flower.Name, flower.Price_Per_Bundle, flower.Stem_Count, flower.Id)
+func patchFlower(flower Flower) (Flower, error) {
+	flowerRow, err := DB.Query("update flowers set name = $1, price_per_bundle = $2, stem_count = $3 where id = $4 returning *", flower.Name, flower.Price_Per_Bundle, flower.Stem_Count, flower.Id)
 
-	if err1 != nil {
-		log.Fatal(err1)
+	if err != nil {
+		log.Println(err)
+		return Flower{}, err
 	}
 
 	flowerRow.Next()
 	var updatedFlower Flower
-	err2 := flowerRow.Scan(&updatedFlower.Id, &updatedFlower.Name, &updatedFlower.Price_Per_Bundle, &updatedFlower.Stem_Count, &updatedFlower.Price_Per_Stem)
+	err = flowerRow.Scan(&updatedFlower.Id, &updatedFlower.Name, &updatedFlower.Price_Per_Bundle, &updatedFlower.Stem_Count, &updatedFlower.Price_Per_Stem)
 
-	if err2 != nil {
-		log.Fatal(err2)
+	if err != nil {
+		log.Println(err)
+		return Flower{}, err
 	}
 
-	return updatedFlower
+	return updatedFlower, nil
 }
 
-func createFlower(flower Flower) Flower {
-	flowerRow, err1 := DB.Query("insert into flowers (name, price_per_bundle, stem_count) values ($1, $2, $3) returning *", flower.Name, flower.Price_Per_Bundle, flower.Stem_Count)
+func createFlower(flower Flower) (Flower, error) {
+	flowerRow, err := DB.Query("insert into flowers (name, price_per_bundle, stem_count) values ($1, $2, $3) returning *", flower.Name, flower.Price_Per_Bundle, flower.Stem_Count)
 
-	if err1 != nil {
-		log.Fatal(err1)
+	if err != nil {
+		log.Println(err)
+		return Flower{}, err
 	}
 
 	flowerRow.Next()
 	var newFlower Flower
-	err2 := flowerRow.Scan(&newFlower.Id, &newFlower.Name, &newFlower.Price_Per_Bundle, &newFlower.Stem_Count, &newFlower.Price_Per_Stem)
+	err = flowerRow.Scan(&newFlower.Id, &newFlower.Name, &newFlower.Price_Per_Bundle, &newFlower.Stem_Count, &newFlower.Price_Per_Stem)
 
-	if err2 != nil {
-		log.Fatal(err2)
+	if err != nil {
+		log.Println(err)
+		return Flower{}, err
 	}
 
-	return newFlower
+	return newFlower, nil
 }
 
-func postArrangement(arrangement ArrangementDto) ArrangementDto {
+func postArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 	Tx, err := DB.Begin()
 
 	var arrId int
@@ -230,61 +253,70 @@ func postArrangement(arrangement ArrangementDto) ArrangementDto {
 
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category")
 	stmt, err := Tx.Prepare(s)
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	for _, af := range arrangement.Flowers {
 		_, err = stmt.Exec(af.Id, arrId, af.Count, af.Category)
 		if err != nil {
 			Tx.Rollback()
-			log.Fatal(err)
+			log.Println(err)
+			return ArrangementDto{}, err
 		}
 	}
 
 	_, err = stmt.Exec()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	err = stmt.Close()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	h := pq.CopyIn("hard_goods", "arrangement_id", "name", "price")
 	stmt2, err := Tx.Prepare(h)
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	for _, hg := range arrangement.Hard_Goods {
 		_, err = stmt2.Exec(arrId, hg.Name, hg.Price)
 		if err != nil {
 			Tx.Rollback()
-			log.Fatal(err)
+			log.Println(err)
+			return ArrangementDto{}, err
 		}
 	}
 
 	_, err = stmt2.Exec()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	err = stmt2.Close()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	if err == nil {
@@ -292,13 +324,14 @@ func postArrangement(arrangement ArrangementDto) ArrangementDto {
 	}
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	return getArrangement(arrId)
 }
 
-func patchArrangement(arrangement ArrangementDto) ArrangementDto {
+func patchArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 	Tx, err := DB.Begin()
 
 	_, err = Tx.Exec(`update arrangements 
@@ -329,35 +362,41 @@ func patchArrangement(arrangement ArrangementDto) ArrangementDto {
 
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
+
 	Tx.Exec("delete from arrangements_flowers where arrangement_id = $1", arrangement.Id)
 
 	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category")
 	stmt, err := Tx.Prepare(s)
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	for _, af := range arrangement.Flowers {
 		_, err = stmt.Exec(af.Id, arrangement.Id, af.Count, af.Category)
 		if err != nil {
 			Tx.Rollback()
-			log.Fatal(err)
+			log.Println(err)
+			return ArrangementDto{}, err
 		}
 	}
 
 	_, err = stmt.Exec()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	err = stmt.Close()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	Tx.Exec("delete from hard_goods where arrangement_id = $1", arrangement.Id)
@@ -366,27 +405,31 @@ func patchArrangement(arrangement ArrangementDto) ArrangementDto {
 	stmt2, err := Tx.Prepare(h)
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	for _, hg := range arrangement.Hard_Goods {
 		_, err = stmt2.Exec(arrangement.Id, hg.Name, hg.Price)
 		if err != nil {
 			Tx.Rollback()
-			log.Fatal(err)
+			log.Println(err)
+			return ArrangementDto{}, err
 		}
 	}
 
 	_, err = stmt2.Exec()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	err = stmt2.Close()
 	if err != nil {
 		Tx.Rollback()
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
 	}
 
 	if err == nil {
@@ -394,7 +437,9 @@ func patchArrangement(arrangement ArrangementDto) ArrangementDto {
 	}
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return ArrangementDto{}, err
+
 	}
 
 	return getArrangement(arrangement.Id)

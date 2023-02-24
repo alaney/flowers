@@ -15,32 +15,52 @@ func main() {
 
 		switch r.Method {
 		case "GET":
-			arrangements := getArrangements()
+			arrangements, err := getArrangements()
 			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(arrangements)
+
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(w).Encode(err)
+			} else {
+				w.WriteHeader(http.StatusOK)
+				json.NewEncoder(w).Encode(arrangements)
+			}
 		case "PATCH":
+			w.Header().Set("Content-Type", "application/json")
 			decoder := json.NewDecoder(r.Body)
 			var a ArrangementDto
 			err := decoder.Decode(&a)
 			if err != nil {
-				panic(err)
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(err)
+			} else {
+				updatedArrangement, err := patchArrangement(a)
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					json.NewEncoder(w).Encode(err)
+				} else {
+					w.WriteHeader(http.StatusOK)
+					json.NewEncoder(w).Encode(updatedArrangement)
+				}
 			}
-			updatedArrangement := patchArrangement(a)
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(updatedArrangement)
 		case "POST":
+			w.Header().Set("Content-Type", "application/json")
 			decoder := json.NewDecoder(r.Body)
 			var a ArrangementDto
 			err := decoder.Decode(&a)
 			if err != nil {
-				panic(err)
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(err)
+			} else {
+				updatedArrangement, err := postArrangement(a)
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					json.NewEncoder(w).Encode(err)
+				} else {
+					w.WriteHeader(http.StatusOK)
+					json.NewEncoder(w).Encode(updatedArrangement)
+				}
 			}
-			updatedArrangement := postArrangement(a)
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(updatedArrangement)
 		}
 	})
 
@@ -48,32 +68,52 @@ func main() {
 
 		switch r.Method {
 		case "GET":
-			flowers := getFlowers()
+			flowers, err := getFlowers()
 			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(flowers)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				json.NewEncoder(w).Encode(err)
+			} else {
+				w.WriteHeader(http.StatusOK)
+				json.NewEncoder(w).Encode(flowers)
+			}
 		case "PATCH":
+			w.Header().Set("Content-Type", "application/json")
 			decoder := json.NewDecoder(r.Body)
 			var flower Flower
 			err := decoder.Decode(&flower)
 			if err != nil {
-				panic(err)
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(err)
+			} else {
+				updatedFlower, err := patchFlower(flower)
+
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					json.NewEncoder(w).Encode(err)
+				} else {
+					w.WriteHeader(http.StatusOK)
+					json.NewEncoder(w).Encode(updatedFlower)
+				}
 			}
-			updatedFlower := patchFlower(flower)
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(updatedFlower)
 		case "POST":
+			w.Header().Set("Content-Type", "application/json")
 			decoder := json.NewDecoder(r.Body)
 			var flower Flower
 			err := decoder.Decode(&flower)
 			if err != nil {
-				panic(err)
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(err)
+			} else {
+				newFlower, err := createFlower(flower)
+				if err != nil {
+					w.WriteHeader(http.StatusInternalServerError)
+					json.NewEncoder(w).Encode(err)
+				} else {
+					w.WriteHeader(http.StatusOK)
+					json.NewEncoder(w).Encode(newFlower)
+				}
 			}
-			newFlower := createFlower(flower)
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(newFlower)
 		}
 	})
 
