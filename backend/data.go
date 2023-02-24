@@ -34,7 +34,7 @@ func getArrangements() []ArrangementDto {
 
 	defer argmtRows.Close()
 
-	var argmtDtos []ArrangementDto
+	var argmtDtos = []ArrangementDto{}
 
 	for argmtRows.Next() {
 		var argmt ArrangementDto
@@ -139,7 +139,7 @@ func getFlowers() []Flower {
 
 	defer flowerRows.Close()
 
-	var flowers []Flower
+	var flowers = []Flower{}
 	for flowerRows.Next() {
 		var flower Flower
 		err := flowerRows.Scan(&flower.Id, &flower.Name, &flower.Price_Per_Bundle, &flower.Stem_Count, &flower.Price_Per_Stem)

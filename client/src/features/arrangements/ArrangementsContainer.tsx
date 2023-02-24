@@ -65,7 +65,24 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
     </>
   ) : (
     <Routes>
-      <Route path="/" element={<ArrangementsList arrangements={filteredArrangements} />} />
+      <Route
+        path="/"
+        element={
+          <>
+            <Grid container>
+              <Grid item xs={6} sm={3}>
+                <Link to="/arrangements/new">
+                  <Button variant="contained" color="primary">
+                    Add Arrangement
+                  </Button>
+                </Link>
+              </Grid>
+            </Grid>
+            <Divider style={{ margin: 16 }} />
+            <ArrangementsList arrangements={filteredArrangements} />
+          </>
+        }
+      />
       <Route path="/:id" element={<ArrangementDetails />} />
     </Routes>
   );
