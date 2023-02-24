@@ -1,32 +1,27 @@
 import { Grid, IconButton, InputAdornment, Typography } from "@mui/material";
 import React from "react";
-import { HardGood } from "../../types/Types";
 import AddIcon from "@mui/icons-material/AddCircleSharp";
 import TextField from "@mui/material/TextField";
-import { addNewHardGood, updateHardGood } from "./arrangementDetailsSlice";
-import { useAppDispatch } from "../../app/hooks";
-import cloneDeep from "lodash.clonedeep";
+import { Control, Controller, FieldErrors, useFieldArray } from "react-hook-form";
+import { ArrangementUpdates } from "./ArrangementDetails2";
 
 interface MiscellaneousHardGoodsProps {
-  miscellaneousHardGoods: HardGood[];
+  control: Control<ArrangementUpdates, any>;
+  errors: FieldErrors<ArrangementUpdates>;
 }
 
-const MiscellaneousHardGoods: React.FC<MiscellaneousHardGoodsProps> = ({ miscellaneousHardGoods }) => {
-  const dispatch = useAppDispatch();
+const MiscellaneousHardGoods: React.FC<MiscellaneousHardGoodsProps> = ({ control, errors }) => {
+  const { fields, append } = useFieldArray({
+    control,
+    name: "hardGoods",
+  });
+
   const addHardGood = () => {
-    dispatch(addNewHardGood());
-  };
-
-  const onHardGoodNameUpdate = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, hg: HardGood) => {
-    const val = e.target.value;
-    const oldHg = cloneDeep(hg);
-    dispatch(updateHardGood({ ...oldHg, name: val }));
-  };
-
-  const onPriceUpdated = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, hg: HardGood) => {
-    const val = Number(event.target.value);
-    const oldHg = cloneDeep(hg);
-    dispatch(updateHardGood({ ...oldHg, price: val }));
+    append({
+      id: (fields.length + 1) * -1,
+      name: "",
+      price: 0,
+    });
   };
 
   return (
@@ -35,26 +30,29 @@ const MiscellaneousHardGoods: React.FC<MiscellaneousHardGoodsProps> = ({ miscell
         <Typography variant="button">Misc</Typography>
       </Grid>
       <Grid container item xs={9} rowSpacing={2}>
-        {miscellaneousHardGoods.map((hg) => (
+        {fields.map((hg, index) => (
           <Grid key={hg.id} container item spacing={2} alignItems="center">
             <Grid item sm={5} xs={8}>
-              <TextField
-                value={hg.name}
-                fullWidth
-                label="Name"
-                size="small"
-                onChange={(e) => onHardGoodNameUpdate(e, hg)}
+              <Controller
+                render={({ field }) => <TextField {...field} fullWidth label="Name" size="small" />}
+                name={`hardGoods.${index}.name`}
+                control={control}
               />
             </Grid>
             <Grid item sm={3} xs={4}>
-              <TextField
-                size="small"
-                label="Cost"
-                value={hg.price}
-                onChange={(e) => onPriceUpdated(e, hg)}
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                }}
+              <Controller
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    size="small"
+                    label="Cost"
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    }}
+                  />
+                )}
+                name={`hardGoods.${index}.price`}
+                control={control}
               />
             </Grid>
           </Grid>

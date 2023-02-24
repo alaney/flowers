@@ -6,8 +6,8 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { Link, Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
-import ArrangementDetails from "./ArrangementDetails";
-import { resetArrangementDetails } from "./arrangementDetailsSlice";
+import ArrangementDetails from "./ArrangementDetails2";
+// import { resetArrangementDetails } from "./arrangementDetailsSlice";
 import ArrangementsList from "./ArrangementsList";
 import { getArrangementsAsync } from "./arrangementsSlice";
 
@@ -23,7 +23,7 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
 
   useEffect(() => {
     dispatch(getArrangementsAsync());
-    return () => dispatch(resetArrangementDetails);
+    // return () => dispatch(resetArrangementDetails);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

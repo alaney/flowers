@@ -2,50 +2,59 @@ import { Autocomplete, Grid, IconButton, TextField } from "@mui/material";
 import React from "react";
 import { ArrangementFlower } from "../../types/Types";
 import AddIcon from "@mui/icons-material/AddCircleSharp";
-import { useAppDispatch } from "../../app/hooks";
-import { addNewFlower, updateFlower } from "../arrangements/arrangementDetailsSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import cloneDeep from "lodash.clonedeep";
+import { Control, Controller, ControllerRenderProps, FieldErrors, useFieldArray } from "react-hook-form";
+import { ArrangementUpdates } from "../arrangements/ArrangementDetails2";
 
 interface FlowerOption {
-  label: string;
+  name: string;
   id: number;
   pricePerStem: number;
 }
 interface ArrangementFlowersProps {
-  arrangementFlowers: ArrangementFlower[];
   category: string;
+  control: Control<ArrangementUpdates, any>;
+  errors: FieldErrors<ArrangementUpdates>;
 }
 
-const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ arrangementFlowers, category }) => {
-  const dispatch = useAppDispatch();
+const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category, control, errors }) => {
   const allFlowers = useSelector((state: RootState) => state.flowers.value);
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: ("flowers." + category) as any,
+  });
+
   const addFlower = () => {
-    dispatch(addNewFlower(category));
+    append({
+      id: (fields.length + 1) * -1,
+      name: "",
+      count: 1,
+      pricePerStem: 0,
+      category,
+    });
   };
 
-  const onFlowerNameUpdate = (af: ArrangementFlower, flowerOption: FlowerOption | null) => {
-    const oldAf = cloneDeep(af);
+  const onFlowerNameUpdate = (
+    af: ArrangementFlower,
+    flowerOption: FlowerOption | null,
+    field: ControllerRenderProps<ArrangementUpdates, any>
+  ) => {
     if (flowerOption) {
-      const newAf: ArrangementFlower = {
-        ...oldAf,
-        id: flowerOption.id,
-        name: flowerOption.label,
-        pricePerStem: flowerOption.pricePerStem,
-      };
-      dispatch(updateFlower({ old: oldAf, new: newAf }));
+      const oldAf = cloneDeep(af);
+      const theFlower = allFlowers.find((a) => a.id === flowerOption.id);
+      if (theFlower) {
+        const newAf: ArrangementFlower = {
+          ...oldAf,
+          id: theFlower.id,
+          name: theFlower.name,
+          pricePerStem: theFlower.pricePerStem,
+        };
+        field.onChange(newAf);
+      }
     }
-  };
-
-  const onCountUpdated = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, af: ArrangementFlower) => {
-    const val = Number(event.target.value);
-    const oldAf = cloneDeep(af);
-    const newAf: ArrangementFlower = {
-      ...oldAf,
-      count: val,
-    };
-    dispatch(updateFlower({ old: oldAf, new: newAf }));
   };
 
   const isFlowerOptionEqual = (option: FlowerOption, value: FlowerOption) => {
@@ -54,28 +63,34 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ arrangementFlow
 
   return (
     <>
-      {arrangementFlowers.map((af) => (
+      {fields.map((af: any, index) => (
         <Grid key={af.id} container item spacing={2} alignItems="center">
           <Grid item md={4} sm={6} xs={9}>
-            <Autocomplete
-              disablePortal
-              id={"flower-name-" + af.id}
-              value={{ label: af.name, id: af.id, pricePerStem: af.pricePerStem }}
-              options={allFlowers.map((f) => ({ label: f.name, id: f.id, pricePerStem: f.pricePerStem }))}
-              onChange={(_e, v) => onFlowerNameUpdate(af, v)}
-              renderInput={(params) => <TextField {...params} label="Name" size="small" />}
-              isOptionEqualToValue={isFlowerOptionEqual}
+            <Controller
+              name={`flowers.${category}.${index}` as any}
+              control={control}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  disablePortal
+                  id={"flower-name-" + category + af.id}
+                  getOptionLabel={(o) => o.name}
+                  options={allFlowers.map((f) => ({ name: f.name, id: f.id, pricePerStem: f.pricePerStem }))}
+                  renderInput={(params) => <TextField {...params} label="Name" size="small" />}
+                  onChange={(e, v) => onFlowerNameUpdate(af, v, field)}
+                  isOptionEqualToValue={isFlowerOptionEqual}
+                />
+              )}
             />
           </Grid>
           <Grid item md={4} sm={6} xs={3}>
-            <TextField
-              onChange={(e) => onCountUpdated(e, af)}
-              size="small"
-              value={af.count}
-              type="number"
-              label="Quantity"
-              inputProps={{ min: "0" }}
-            ></TextField>
+            <Controller
+              name={`flowers.${category}.${index}.count` as any}
+              control={control}
+              render={({ field }) => (
+                <TextField {...field} size="small" type="number" label="Quantity" inputProps={{ min: "0" }} />
+              )}
+            />
           </Grid>
         </Grid>
       ))}

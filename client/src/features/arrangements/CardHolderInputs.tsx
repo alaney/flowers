@@ -1,7 +1,7 @@
 import React from "react";
-import { Checkbox, Grid, InputAdornment, Switch, TextField, Typography } from "@mui/material";
+import { Checkbox, Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
-import { ArrangementUpdates } from "./ArrangementDetails";
+import { ArrangementUpdates } from "./ArrangementDetails2";
 
 interface CardHolderInputsProps {
   control: Control<ArrangementUpdates, any>;

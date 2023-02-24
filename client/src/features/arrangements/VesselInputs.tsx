@@ -1,7 +1,7 @@
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { ArrangementUpdates } from "./ArrangementDetails";
+import { ArrangementUpdates } from "./ArrangementDetails2";
 
 interface VesselInputsProps {
   control: Control<ArrangementUpdates, any>;

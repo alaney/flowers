@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { ArrangementUpdates } from "./ArrangementDetails";
+import { ArrangementUpdates } from "./ArrangementDetails2";
 
 interface FoamInputsProps {
   control: Control<ArrangementUpdates, any>;
