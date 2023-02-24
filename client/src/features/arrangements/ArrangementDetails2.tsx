@@ -121,6 +121,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       name: arrangement.name,
       vesselType: arrangement.vesselType,
       foamCount: arrangement.foamCount,
+      vesselCost: arrangement.vesselCost,
       vesselCount: arrangement.vesselCount,
       cardHolder: arrangement.cardHolder,
       hardGoods: arrangement.hardGoods,
