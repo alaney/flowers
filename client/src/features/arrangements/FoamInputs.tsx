@@ -30,7 +30,7 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ control, errors }) => {
         <Controller
           name="foamCount"
           control={control}
-          rules={{ required: false, pattern: /^[0-9]*$/ }}
+          rules={{ required: false, pattern: /^\d+(\.\d+)?$/ }}
           render={({ field }) => (
             <TextField {...field} size="small" label="Quantity" error={!!errors.foamCount}></TextField>
           )}

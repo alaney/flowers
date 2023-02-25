@@ -151,6 +151,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       count: Number(b.count),
       pricePerStem: Number(b.pricePerStem),
       category: b.category,
+      priceOverride: b.priceOverride,
     });
     const base = arrangementUpdates.flowers?.base.map<ArrangementFlower>(mapper);
     const primary = arrangementUpdates.flowers?.primary.map<ArrangementFlower>(mapper);

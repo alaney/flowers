@@ -96,7 +96,7 @@ func getArrangement(id int) (ArrangementDto, error) {
 }
 
 func getFlowersForArrangement(arrangement_id int) ([]ArrangementFlowerDto, error) {
-	argmtFlowerRows, err := DB.Query("select f.id, f.name, af.count, af.category, f.price_per_stem from arrangements_flowers af, flowers f where af.arrangement_id = $1 and af.flower_id = f.id", arrangement_id)
+	argmtFlowerRows, err := DB.Query("select f.id, f.name, af.count, af.category, f.price_per_stem, af.price_override from arrangements_flowers af, flowers f where af.arrangement_id = $1 and af.flower_id = f.id", arrangement_id)
 
 	if err != nil {
 		log.Println(err)
@@ -108,7 +108,7 @@ func getFlowersForArrangement(arrangement_id int) ([]ArrangementFlowerDto, error
 	flowers := []ArrangementFlowerDto{}
 	for argmtFlowerRows.Next() {
 		var flower ArrangementFlowerDto
-		err := argmtFlowerRows.Scan(&flower.Id, &flower.Name, &flower.Count, &flower.Category, &flower.Price_Per_Stem)
+		err := argmtFlowerRows.Scan(&flower.Id, &flower.Name, &flower.Count, &flower.Category, &flower.Price_Per_Stem, &flower.Price_Override)
 
 		if err != nil {
 			log.Println(err)
@@ -257,7 +257,7 @@ func postArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 		return ArrangementDto{}, err
 	}
 
-	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category")
+	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category", "price_override")
 	stmt, err := Tx.Prepare(s)
 	if err != nil {
 		Tx.Rollback()
@@ -266,7 +266,7 @@ func postArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 	}
 
 	for _, af := range arrangement.Flowers {
-		_, err = stmt.Exec(af.Id, arrId, af.Count, af.Category)
+		_, err = stmt.Exec(af.Id, arrId, af.Count, af.Category, af.Price_Override)
 		if err != nil {
 			Tx.Rollback()
 			log.Println(err)
@@ -368,7 +368,7 @@ func patchArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 
 	Tx.Exec("delete from arrangements_flowers where arrangement_id = $1", arrangement.Id)
 
-	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category")
+	s := pq.CopyIn("arrangements_flowers", "flower_id", "arrangement_id", "count", "category", "price_override")
 	stmt, err := Tx.Prepare(s)
 	if err != nil {
 		Tx.Rollback()
@@ -377,7 +377,7 @@ func patchArrangement(arrangement ArrangementDto) (ArrangementDto, error) {
 	}
 
 	for _, af := range arrangement.Flowers {
-		_, err = stmt.Exec(af.Id, arrangement.Id, af.Count, af.Category)
+		_, err = stmt.Exec(af.Id, arrangement.Id, af.Count, af.Category, af.Price_Override)
 		if err != nil {
 			Tx.Rollback()
 			log.Println(err)

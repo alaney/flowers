@@ -61,6 +61,7 @@ export const arrangementDetailsSlice = createSlice({
         count: 1,
         pricePerStem: 0,
         category: action.payload,
+        priceOverride: "",
       });
     },
     setArrangement: (state, action: PayloadAction<Arrangement>) => {

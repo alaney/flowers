@@ -20,6 +20,7 @@ export interface ArrangementFlower {
   count: number;
   category: string;
   pricePerStem: number;
+  priceOverride: string;
 }
 
 export interface Flower {

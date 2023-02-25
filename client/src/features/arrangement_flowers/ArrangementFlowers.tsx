@@ -1,11 +1,19 @@
-import { Autocomplete, Grid, IconButton, TextField } from "@mui/material";
+import { Autocomplete, Grid, IconButton, InputAdornment, TextField } from "@mui/material";
 import React from "react";
 import { ArrangementFlower } from "../../types/Types";
 import AddIcon from "@mui/icons-material/AddCircleSharp";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import cloneDeep from "lodash.clonedeep";
-import { Control, Controller, ControllerRenderProps, FieldErrors, useFieldArray } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  ControllerRenderProps,
+  FieldErrors,
+  FieldName,
+  FieldValue,
+  useFieldArray,
+} from "react-hook-form";
 import { ArrangementUpdates } from "../arrangements/ArrangementDetails2";
 
 interface FlowerOption {
@@ -65,7 +73,7 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category, contr
     <>
       {fields.map((af: any, index) => (
         <Grid key={af.id} container item spacing={2} alignItems="center">
-          <Grid item md={4} sm={6} xs={9}>
+          <Grid item md={6} sm={6} xs={6}>
             <Controller
               name={`flowers.${category}.${index}` as any}
               control={control}
@@ -83,12 +91,28 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category, contr
               )}
             />
           </Grid>
-          <Grid item md={4} sm={6} xs={3}>
+          <Grid item md={3} sm={3} xs={3}>
             <Controller
               name={`flowers.${category}.${index}.count` as any}
+              rules={{ required: false, pattern: /^[1-9][0-9]*$/ }}
+              control={control}
+              render={({ field }) => <TextField {...field} size="small" label="Quantity" />}
+            />
+          </Grid>
+          <Grid item md={3} sm={3} xs={3}>
+            <Controller
+              rules={{ required: false, pattern: /^[1-9][0-9]*$/ }}
+              name={`flowers.${category}.${index}.priceOverride` as any}
               control={control}
               render={({ field }) => (
-                <TextField {...field} size="small" type="number" label="Quantity" inputProps={{ min: "0" }} />
+                <TextField
+                  {...field}
+                  size="small"
+                  label="Cost Override"
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
+                />
               )}
             />
           </Grid>

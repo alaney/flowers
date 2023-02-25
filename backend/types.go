@@ -51,6 +51,7 @@ type ArrangementFlowerDto struct {
 	Count          int     `json:"count"`
 	Category       string  `json:"category"`
 	Price_Per_Stem float32 `json:"pricePerStem"`
+	Price_Override string  `json:"priceOverride"`
 }
 
 type ArrangementDto struct {
@@ -59,7 +60,7 @@ type ArrangementDto struct {
 	Vessel_Type  string                 `json:"vesselType"`
 	Vessel_Count int                    `json:"vesselCount"`
 	Vessel_Price float32                `json:"vesselCost"`
-	Foam_Count   int                    `json:"foamCount"`
+	Foam_Count   float32                `json:"foamCount"`
 	Card_Holder  bool                   `json:"cardHolder"`
 	Venmo        bool                   `json:"venmo"`
 	Paypal       bool                   `json:"paypal"`
