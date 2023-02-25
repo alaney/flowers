@@ -21,15 +21,13 @@ export const debounce = (func: (...args: any[]) => void, wait: number) => {
 
 const calculateFlowersSubtotal = (arrangement: Arrangement): number => {
   const flowers = arrangement.flowers;
-  return (
-    flowers.reduce<number>((a, f) => {
-      const priceOverride = f.priceOverride ? Number(f.priceOverride) : null;
-      const whichPrice = typeof priceOverride === "number" ? priceOverride : f.pricePerStem;
-      const price = whichPrice * f.count;
-      a += price;
-      return a;
-    }, 0) * 2
-  );
+  return flowers.reduce<number>((a, f) => {
+    const priceOverride = f.priceOverride ? Number(f.priceOverride) : null;
+    const whichPrice = typeof priceOverride === "number" ? priceOverride : f.pricePerStem * 2;
+    const price = whichPrice * f.count;
+    a += price;
+    return a;
+  }, 0);
 };
 
 const calculateHardGoodsSubtotal = (arrangement: Arrangement): number => {
