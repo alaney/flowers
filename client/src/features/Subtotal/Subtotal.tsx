@@ -21,7 +21,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
   } = subtotals;
   return (
     <Grid container>
-      <Grid container item>
+      <Grid container item alignItems="center">
         <Grid item xs={3}>
           <Typography variant="button">Flowers</Typography>
         </Grid>
@@ -31,11 +31,11 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
           <Typography>{`$ ${formatDollar(flowersSubtotal)}`}</Typography>
         </Grid>
       </Grid>
-      <Grid container item>
-        <Grid item xs={4}>
+      <Grid container item alignItems="center">
+        <Grid item xs={3}>
           <Typography variant="button">Hard Goods</Typography>
         </Grid>
-        <Grid item xs={2}></Grid>
+        <Grid item xs={3}></Grid>
         <Grid item xs={3}>
           {`$ ${formatDollar(hardGoodsSubtotal)}`}
         </Grid>
@@ -43,7 +43,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
           <Typography>{`$ ${formatDollar(hardGoodsSubtotal + flowersSubtotal)}`}</Typography>
         </Grid>
       </Grid>
-      <Grid container item>
+      <Grid container item alignItems="center">
         <Grid item xs={3}>
           <Typography variant="button">Labor</Typography>
         </Grid>
@@ -55,7 +55,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
           <Typography>{`$ ${formatDollar(hardGoodsSubtotal + flowersSubtotal + laborSubtotal)}`}</Typography>
         </Grid>
       </Grid>
-      <Grid container item>
+      <Grid container item alignItems="center">
         <Grid item xs={3}>
           <Typography variant="button">Tax</Typography>
         </Grid>
@@ -67,7 +67,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
           <Typography>{`$ ${formatDollar(taxTotal)}`}</Typography>
         </Grid>
       </Grid>
-      <Grid container item>
+      <Grid container item alignItems="center">
         <Grid item xs={3}>
           <Typography variant="button">Venmo</Typography>
         </Grid>
@@ -79,7 +79,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
           <Typography>{`$ ${formatDollar(venmoTotal)}`}</Typography>
         </Grid>
       </Grid>
-      <Grid container item>
+      <Grid container item alignItems="center">
         <Grid item xs={3}>
           <Typography variant="button">PayPal</Typography>
         </Grid>

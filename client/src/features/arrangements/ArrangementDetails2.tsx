@@ -23,7 +23,7 @@ export interface ArrangementUpdates {
   cardHolder: boolean;
   hardGoods: HardGood[];
   flowers: {
-    base: Required<ArrangementFlower>[];
+    base: ArrangementFlower[];
     primary: ArrangementFlower[];
     filler: ArrangementFlower[];
     bits: ArrangementFlower[];
@@ -76,6 +76,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     defaultValues: {
       name: arrangement.name,
       vesselType: arrangement.vesselType,
+      vesselCount: arrangement.vesselCount,
       foamCount: arrangement.foamCount,
       vesselCost: arrangement.vesselCost,
       cardHolder: arrangement.cardHolder,
