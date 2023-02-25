@@ -211,6 +211,8 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           rules={{ required: true }}
           render={({ field }) => (
             <TextField
+              autoFocus
+              placeholder="Arrangement Name"
               style={{ marginBottom: 16 }}
               variant="standard"
               error={!!errors.name}

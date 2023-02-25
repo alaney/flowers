@@ -97,7 +97,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               </Tooltip>
             )}
           </Grid>
-          <Grid item sm={3} xs={3}>
+          <Grid item md={2} sm={3} xs={3}>
             {editing ? (
               <Controller
                 name="price"
@@ -121,7 +121,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flower.pricePerBundle)}`}</Typography>
             )}
           </Grid>
-          <Grid item sm={3} xs={3}>
+          <Grid item md={1} sm={3} xs={3}>
             {editing ? (
               <Controller
                 name="count"
@@ -142,16 +142,16 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               <Typography style={{ textAlign: "right" }}>{flower.stemCount}</Typography>
             )}
           </Grid>
-          <Grid item sm={3} xs={3}>
+          <Grid item md={2} sm={3} xs={3}>
             <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flower.pricePerStem)}`}</Typography>
           </Grid>
           {status === "failed" && (
-            <Grid item sm={2} md={2}>
+            <Grid item sm={2} md={1}>
               <Typography>Failed!</Typography>
             </Grid>
           )}
           {isSubmitting && (
-            <Grid item sm={2} md={2}>
+            <Grid item sm={2} md={1}>
               <Typography>Saving...</Typography>
             </Grid>
           )}
