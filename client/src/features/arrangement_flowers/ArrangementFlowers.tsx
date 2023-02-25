@@ -101,7 +101,7 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category, contr
           </Grid>
           <Grid item md={3} sm={3} xs={3}>
             <Controller
-              rules={{ required: false, pattern: /^[1-9][0-9]*$/ }}
+              rules={{ required: false, pattern: /^\d+(\.\d+)?$/ }}
               name={`flowers.${category}.${index}.priceOverride` as any}
               control={control}
               render={({ field }) => (
