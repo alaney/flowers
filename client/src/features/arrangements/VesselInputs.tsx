@@ -28,13 +28,13 @@ const VesselInputs: React.FC<VesselInputsProps> = ({ control, errors }) => {
           rules={{ required: false, pattern: /^\d+(\.\d+)?$/ }}
           render={({ field }) => (
             <TextField
+              {...field}
               size="small"
               label="Cost"
               error={!!errors.vesselCost}
               InputProps={{
                 startAdornment: <InputAdornment position="start">$</InputAdornment>,
               }}
-              {...field}
             />
           )}
         />
