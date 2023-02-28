@@ -7,7 +7,6 @@ import { Link, Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ArrangementDetails from "./ArrangementDetails2";
-// import { resetArrangementDetails } from "./arrangementDetailsSlice";
 import ArrangementsList from "./ArrangementsList";
 import { getArrangementsAsync } from "./arrangementsSlice";
 
@@ -41,7 +40,7 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
     <>
       <Grid container>
         <Grid item xs={6} sm={3}>
-          <Link to="/arrangements/new">
+          <Link to="/arrangements/new" style={{ textDecoration: "none" }}>
             <Button variant="contained" color="primary">
               Add Arrangement
             </Button>

@@ -1,4 +1,4 @@
-import { Button, Divider, Grid, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Button, Checkbox, Divider, Grid, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import HardGoods from "./HardGoods";
 interface ArrangementDetailsProps {}
 export interface ArrangementUpdates {
   name: string;
+  done: boolean;
   vesselType: string;
   vesselCount: number;
   vesselCost: number;
@@ -81,6 +82,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       vesselCost: arrangement.vesselCost,
       cardHolder: arrangement.cardHolder,
       hardGoods: arrangement.hardGoods,
+      done: arrangement.done,
       flowers: {
         base: arrangement.flowers.filter((f) => f.category === "base"),
         primary: arrangement.flowers.filter((f) => f.category === "primary"),
@@ -120,6 +122,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     setSubTotals(calculateSubtotals(arrangement));
     reset({
       name: arrangement.name,
+      done: arrangement.done,
       vesselType: arrangement.vesselType,
       foamCount: arrangement.foamCount,
       vesselCost: arrangement.vesselCost,
@@ -263,12 +266,23 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
               </Button>
             </Grid>
             <Grid item xs={3}>
+              <Controller
+                name="done"
+                control={control}
+                render={({ field: props }) => {
+                  return (
+                    <Checkbox {...props} checked={props.value} onChange={(e) => props.onChange(e.target.checked)} />
+                  );
+                }}
+              />
+            </Grid>
+            <Grid item xs={2}>
               <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
             </Grid>
           </Grid>
