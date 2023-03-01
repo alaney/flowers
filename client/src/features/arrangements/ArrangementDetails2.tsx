@@ -265,7 +265,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
                 Save
               </Button>
             </Grid>
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
               <Controller
                 name="done"
                 control={control}
@@ -275,7 +275,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
                   );
                 }}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={2}>
               <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
             </Grid>

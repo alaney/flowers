@@ -28,7 +28,7 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         <Grid item xs={3}></Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
-          <Typography>{`$ ${formatDollar(flowersSubtotal)}`}</Typography>
+          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(flowersSubtotal)}`}</Typography>
         </Grid>
       </Grid>
       <Grid container item alignItems="center">
@@ -37,10 +37,12 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
-          {`$ ${formatDollar(hardGoodsSubtotal)}`}
+          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(hardGoodsSubtotal)}`}</Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography>{`$ ${formatDollar(hardGoodsSubtotal + flowersSubtotal)}`}</Typography>
+          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(
+            hardGoodsSubtotal + flowersSubtotal
+          )}`}</Typography>
         </Grid>
       </Grid>
       <Grid container item alignItems="center">
@@ -49,10 +51,12 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
-          {`$ ${formatDollar(laborSubtotal)}`}
+          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(laborSubtotal)}`}</Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography>{`$ ${formatDollar(hardGoodsSubtotal + flowersSubtotal + laborSubtotal)}`}</Typography>
+          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(
+            hardGoodsSubtotal + flowersSubtotal + laborSubtotal
+          )}`}</Typography>
         </Grid>
       </Grid>
       <Grid container item alignItems="center">
@@ -61,10 +65,10 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
-          {`$ ${formatDollar(taxSubtotal)}`}
+          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(taxSubtotal)}`} </Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography>{`$ ${formatDollar(taxTotal)}`}</Typography>
+          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(taxTotal)}`}</Typography>
         </Grid>
       </Grid>
       <Grid container item alignItems="center">
@@ -73,10 +77,10 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
-          {`$ ${formatDollar(venmoSubtotal)}`}
+          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(venmoSubtotal)}`}</Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography>{`$ ${formatDollar(venmoTotal)}`}</Typography>
+          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(venmoTotal)}`}</Typography>
         </Grid>
       </Grid>
       <Grid container item alignItems="center">
@@ -85,10 +89,10 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         </Grid>
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
-          {`$ ${formatDollar(paypalSubtotal)}`}
+          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(paypalSubtotal)}`}</Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography>{`$ ${formatDollar(paypalTotal)}`}</Typography>
+          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(paypalTotal)}`}</Typography>
         </Grid>
       </Grid>
     </Grid>
