@@ -70,7 +70,7 @@ const ArrangementsContainer: React.FC<ArrangementsContainerProps> = () => {
           <>
             <Grid container>
               <Grid item xs={6} sm={3}>
-                <Link to="/arrangements/new">
+                <Link to="/arrangements/new" style={{ textDecoration: "none" }}>
                   <Button variant="contained" color="primary">
                     Add Arrangement
                   </Button>
