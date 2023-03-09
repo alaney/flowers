@@ -15,6 +15,7 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { ArrangementUpdates } from "../arrangements/ArrangementDetails2";
+import { decimalNumberRegex } from "../../app/utils";
 
 interface FlowerOption {
   name: string;
@@ -94,14 +95,14 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category, contr
           <Grid item md={3} sm={3} xs={3}>
             <Controller
               name={`flowers.${category}.${index}.count` as any}
-              rules={{ required: false, pattern: /^[1-9][0-9]*$/ }}
+              rules={{ required: false, pattern: decimalNumberRegex }}
               control={control}
               render={({ field }) => <TextField {...field} size="small" label="Quantity" />}
             />
           </Grid>
           <Grid item md={3} sm={3} xs={3}>
             <Controller
-              rules={{ required: false, pattern: /^\d+(\.\d+)?$/ }}
+              rules={{ required: false, pattern: decimalNumberRegex }}
               name={`flowers.${category}.${index}.priceOverride` as any}
               control={control}
               render={({ field }) => (

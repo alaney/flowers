@@ -7,7 +7,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { createFlowerAsync, updateFlowerAsync } from "./flowersSlice";
 import cloneDeep from "lodash.clonedeep";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { formatDollar } from "../../app/utils";
+import { decimalNumberRegex, formatDollar } from "../../app/utils";
 
 interface FlowerInputsProps {
   flower: Flower;
@@ -102,7 +102,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               <Controller
                 name="price"
                 control={control}
-                rules={{ required: true, pattern: /^\d+(\.\d+)?$/ }}
+                rules={{ required: true, pattern: decimalNumberRegex }}
                 render={({ field }) => (
                   <TextField
                     InputProps={{

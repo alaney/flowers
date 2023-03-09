@@ -48,7 +48,7 @@ type Arrangement_Flower struct {
 type ArrangementFlowerDto struct {
 	Id             int     `json:"id"`
 	Name           string  `json:"name"`
-	Count          int     `json:"count"`
+	Count          float32 `json:"count"`
 	Category       string  `json:"category"`
 	Price_Per_Stem float32 `json:"pricePerStem"`
 	Price_Override string  `json:"priceOverride"`

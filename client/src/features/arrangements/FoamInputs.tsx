@@ -2,6 +2,7 @@ import React from "react";
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { ArrangementUpdates } from "./ArrangementDetails2";
+import { decimalNumberRegex } from "../../app/utils";
 
 interface FoamInputsProps {
   control: Control<ArrangementUpdates, any>;
@@ -30,7 +31,7 @@ const FoamInputs: React.FC<FoamInputsProps> = ({ control, errors }) => {
         <Controller
           name="foamCount"
           control={control}
-          rules={{ required: false, pattern: /^\d+(\.\d+)?$/ }}
+          rules={{ required: false, pattern: decimalNumberRegex }}
           render={({ field }) => (
             <TextField {...field} size="small" label="Quantity" error={!!errors.foamCount}></TextField>
           )}

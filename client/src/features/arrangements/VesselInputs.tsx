@@ -1,6 +1,7 @@
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
+import { decimalNumberRegex } from "../../app/utils";
 import { ArrangementUpdates } from "./ArrangementDetails2";
 
 interface VesselInputsProps {
@@ -25,7 +26,7 @@ const VesselInputs: React.FC<VesselInputsProps> = ({ control, errors }) => {
         <Controller
           name="vesselCost"
           control={control}
-          rules={{ required: false, pattern: /^\d+(\.\d+)?$/ }}
+          rules={{ required: false, pattern: decimalNumberRegex }}
           render={({ field }) => (
             <TextField
               {...field}
