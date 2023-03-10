@@ -22,7 +22,7 @@ function useRouteMatch(patterns: readonly string[]) {
 }
 
 function App() {
-  const routeMatch = useRouteMatch(["/arrangements*", "/flowers"]);
+  const routeMatch = useRouteMatch(["/arrangements/*", "/flowers"]);
   const currentTab = routeMatch?.pattern?.path;
   const dispatch = useAppDispatch();
 
@@ -37,7 +37,7 @@ function App() {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={currentTab} centered={true}>
             <Tab label="Flowers" value="/flowers" to="/flowers" component={Link} />
-            <Tab label="Arrangements" value="/arrangements*" to="/arrangements" component={Link} />
+            <Tab label="Arrangements" value="/arrangements/*" to="/arrangements" component={Link} />
           </Tabs>
         </Box>
       </nav>
