@@ -1,6 +1,6 @@
-import { Button, Checkbox, Divider, Grid, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Button, Divider, Grid, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
@@ -67,13 +67,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
     paypalTotal: 0,
   });
 
-  const {
-    handleSubmit,
-    control,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm<ArrangementUpdates>({
+  const methods = useForm<ArrangementUpdates>({
     defaultValues: {
       name: arrangement.name,
       vesselType: arrangement.vesselType,
@@ -91,6 +85,14 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       },
     },
   });
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    watch,
+    formState: { errors },
+  } = methods;
 
   const watchAllFields = watch();
 
@@ -191,7 +193,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           ...arrangement,
           ...arrangementUpdates,
           flowers: combinedFlowers,
-          hardGoods: arrangementUpdates.hardGoods,
+          hardGoods: hgs,
           foamCount: Number(arrangementUpdates.foamCount),
           vesselCount: Number(arrangementUpdates.vesselCount),
           vesselCost: Number(arrangementUpdates.vesselCost),
@@ -208,64 +210,65 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
 
   return (
     <div style={{ marginBottom: 56 }}>
-      <form onSubmit={handleSubmit(onSave)}>
-        <Controller
-          name="name"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <TextField
-              autoFocus
-              placeholder="Arrangement Name"
-              style={{ marginBottom: 16 }}
-              variant="standard"
-              error={!!errors.name}
-              inputProps={{ style: { fontSize: 32 } }}
-              {...field}
-            />
-          )}
-        />
-        <Typography variant="h6" component="h2">
-          Hard Goods
-        </Typography>
-        <Divider />
-        <div style={{ margin: "16px 0" }}>
-          <HardGoods control={control} errors={errors} />
-        </div>
-        <Typography variant="h6" component="h2">
-          Flowers
-        </Typography>
-        <Divider />
-        <div style={{ margin: "16px 0" }}>
-          <ArrangementFlowersContainer control={control} errors={errors} />
-        </div>
-        <Typography variant="h6" component="h2">
-          Numberidoos
-        </Typography>
-        <Divider />
-        <div style={{ margin: "16px 0" }}>
-          <Subtotal subtotals={subTotals} />
-        </div>
-        <div
-          className="noprint"
-          style={{
-            position: "fixed",
-            bottom: 0,
-            left: matches ? "unset" : 0,
-            backgroundColor: "white",
-            width: matches ? "-webkit-fill-available" : "100vw",
-            paddingBottom: 8,
-            zIndex: 1,
-          }}
-        >
-          <Divider style={{ margin: " 0 0 8px" }} />
-          <Grid container alignItems="center">
-            <Grid item xs={3}>
-              <Button style={{ marginLeft: 8 }} variant="contained" color="success" type="submit">
-                Save
-              </Button>
-            </Grid>
-            {/* <Grid item xs={3}>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSave)}>
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <TextField
+                autoFocus
+                placeholder="Arrangement Name"
+                style={{ marginBottom: 16 }}
+                variant="standard"
+                error={!!errors.name}
+                inputProps={{ style: { fontSize: 32 } }}
+                {...field}
+              />
+            )}
+          />
+          <Typography variant="h6" component="h2">
+            Hard Goods
+          </Typography>
+          <Divider />
+          <div style={{ margin: "16px 0" }}>
+            <HardGoods control={control} errors={errors} />
+          </div>
+          <Typography variant="h6" component="h2">
+            Flowers
+          </Typography>
+          <Divider />
+          <div style={{ margin: "16px 0" }}>
+            <ArrangementFlowersContainer control={control} errors={errors} />
+          </div>
+          <Typography variant="h6" component="h2">
+            Numberidoos
+          </Typography>
+          <Divider />
+          <div style={{ margin: "16px 0" }}>
+            <Subtotal subtotals={subTotals} />
+          </div>
+          <div
+            className="noprint"
+            style={{
+              position: "fixed",
+              bottom: 0,
+              left: matches ? "unset" : 0,
+              backgroundColor: "white",
+              width: matches ? "-webkit-fill-available" : "100vw",
+              paddingBottom: 8,
+              zIndex: 1,
+            }}
+          >
+            <Divider style={{ margin: " 0 0 8px" }} />
+            <Grid container alignItems="center">
+              <Grid item xs={3}>
+                <Button style={{ marginLeft: 8 }} variant="contained" color="success" type="submit">
+                  Save
+                </Button>
+              </Grid>
+              {/* <Grid item xs={3}>
               <Controller
                 name="done"
                 control={control}
@@ -276,18 +279,19 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
                 }}
               />
             </Grid> */}
-            <Grid item xs={2}>
-              <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
+              <Grid item xs={2}>
+                <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
+              </Grid>
+              <Grid item xs={2}>
+                <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
+              </Grid>
+              <Grid item xs={2}>
+                <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
+              </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
-            </Grid>
-            <Grid item xs={2}>
-              <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
-            </Grid>
-          </Grid>
-        </div>
-      </form>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   );
 };
