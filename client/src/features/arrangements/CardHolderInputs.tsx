@@ -1,13 +1,12 @@
 import React from "react";
 import { Checkbox, Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import { Control, Controller } from "react-hook-form";
-import { ArrangementUpdates } from "./ArrangementDetails2";
+import { Controller, useFormContext } from "react-hook-form";
 
-interface CardHolderInputsProps {
-  control: Control<ArrangementUpdates, any>;
-}
+interface CardHolderInputsProps {}
 
-const CardHolderInputs: React.FC<CardHolderInputsProps> = ({ control }) => {
+const CardHolderInputs: React.FC<CardHolderInputsProps> = () => {
+  const { control } = useFormContext();
+
   return (
     <Grid item container spacing={2} alignItems="center">
       <Grid item md={2} sm={2} xs={3}>

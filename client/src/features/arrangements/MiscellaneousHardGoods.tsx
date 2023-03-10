@@ -2,15 +2,13 @@ import { Grid, IconButton, InputAdornment, Typography } from "@mui/material";
 import React from "react";
 import AddIcon from "@mui/icons-material/AddCircleSharp";
 import TextField from "@mui/material/TextField";
-import { Control, Controller, FieldErrors, useFieldArray } from "react-hook-form";
-import { ArrangementUpdates } from "./ArrangementDetails2";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
-interface MiscellaneousHardGoodsProps {
-  control: Control<ArrangementUpdates, any>;
-  errors: FieldErrors<ArrangementUpdates>;
-}
+interface MiscellaneousHardGoodsProps {}
 
-const MiscellaneousHardGoods: React.FC<MiscellaneousHardGoodsProps> = ({ control, errors }) => {
+const MiscellaneousHardGoods: React.FC<MiscellaneousHardGoodsProps> = () => {
+  const { control } = useFormContext();
+
   const { fields, append } = useFieldArray({
     control,
     name: "hardGoods",

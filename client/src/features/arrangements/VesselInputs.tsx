@@ -1,15 +1,16 @@
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { decimalNumberRegex } from "../../app/utils";
-import { ArrangementUpdates } from "./ArrangementDetails2";
 
-interface VesselInputsProps {
-  control: Control<ArrangementUpdates, any>;
-  errors: FieldErrors<ArrangementUpdates>;
-}
+interface VesselInputsProps {}
 
-const VesselInputs: React.FC<VesselInputsProps> = ({ control, errors }) => {
+const VesselInputs: React.FC<VesselInputsProps> = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <Grid item container spacing={2} alignItems="center">
       <Grid item md={2} sm={2} xs={3}>

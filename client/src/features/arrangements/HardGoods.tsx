@@ -15,10 +15,10 @@ interface HardGoodsProps {
 const HardGoods: React.FC<HardGoodsProps> = ({ control, errors }) => {
   return (
     <Grid container rowSpacing={2}>
-      <VesselInputs control={control} errors={errors} />
-      <FoamInputs control={control} errors={errors} />
-      <CardHolderInputs control={control} />
-      <MiscellaneousHardGoods control={control} errors={errors} />
+      <VesselInputs />
+      <FoamInputs />
+      <CardHolderInputs />
+      <MiscellaneousHardGoods />
     </Grid>
   );
 };
