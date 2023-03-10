@@ -1,15 +1,16 @@
 import React from "react";
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import { ArrangementUpdates } from "./ArrangementDetails2";
+import { Controller, useFormContext } from "react-hook-form";
 import { decimalNumberRegex } from "../../app/utils";
 
-interface FoamInputsProps {
-  control: Control<ArrangementUpdates, any>;
-  errors: FieldErrors<ArrangementUpdates>;
-}
+interface FoamInputsProps {}
 
-const FoamInputs: React.FC<FoamInputsProps> = ({ control, errors }) => {
+const FoamInputs: React.FC<FoamInputsProps> = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
   return (
     <Grid item container spacing={2} alignItems="center">
       <Grid item md={2} sm={2} xs={3}>
