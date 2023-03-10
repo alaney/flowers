@@ -5,15 +5,7 @@ import AddIcon from "@mui/icons-material/AddCircleSharp";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import cloneDeep from "lodash.clonedeep";
-import {
-  Control,
-  Controller,
-  ControllerRenderProps,
-  FieldErrors,
-  FieldName,
-  FieldValue,
-  useFieldArray,
-} from "react-hook-form";
+import { Controller, ControllerRenderProps, useFieldArray, useFormContext } from "react-hook-form";
 import { ArrangementUpdates } from "../arrangements/ArrangementDetails2";
 import { decimalNumberRegex } from "../../app/utils";
 
@@ -24,13 +16,12 @@ interface FlowerOption {
 }
 interface ArrangementFlowersProps {
   category: string;
-  control: Control<ArrangementUpdates, any>;
-  errors: FieldErrors<ArrangementUpdates>;
 }
 
-const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category, control, errors }) => {
+const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category }) => {
   const allFlowers = useSelector((state: RootState) => state.flowers.value);
 
+  const { control } = useFormContext<ArrangementUpdates>();
   const { fields, append } = useFieldArray({
     control,
     name: ("flowers." + category) as any,

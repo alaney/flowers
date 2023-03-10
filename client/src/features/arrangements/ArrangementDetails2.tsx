@@ -118,7 +118,7 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
       );
     });
     return () => subscription.unsubscribe();
-  }, [watchAllFields]);
+  }, [arrangement, watch, watchAllFields]);
 
   useEffect(() => {
     setSubTotals(calculateSubtotals(arrangement));
@@ -233,14 +233,14 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
           </Typography>
           <Divider />
           <div style={{ margin: "16px 0" }}>
-            <HardGoods control={control} errors={errors} />
+            <HardGoods />
           </div>
           <Typography variant="h6" component="h2">
             Flowers
           </Typography>
           <Divider />
           <div style={{ margin: "16px 0" }}>
-            <ArrangementFlowersContainer control={control} errors={errors} />
+            <ArrangementFlowersContainer />
           </div>
           <Typography variant="h6" component="h2">
             Numberidoos
