@@ -126,7 +126,7 @@ const FlowerInputs: React.FC<FlowerInputsProps> = ({ flower }) => {
               <Controller
                 name="count"
                 control={control}
-                rules={{ required: true, pattern: /^[1-9][0-9]*$/ }}
+                rules={{ required: true, pattern: /^[0-9]*$/ }}
                 render={({ field }) => (
                   <TextField
                     {...field}
