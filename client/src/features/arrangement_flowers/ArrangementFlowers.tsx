@@ -79,6 +79,7 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category }) => 
                   {...field}
                   size="small"
                   label="Cost Override"
+                  placeholder={af.pricePerStem}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
                   }}
