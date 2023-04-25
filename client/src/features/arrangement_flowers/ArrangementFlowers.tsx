@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { ArrangementUpdates } from "../arrangements/ArrangementDetails2";
-import { decimalNumberRegex } from "../../app/utils";
+import { decimalNumberRegex, formatDollar } from "../../app/utils";
 
 interface ArrangementFlowersProps {
   category: string;
@@ -79,7 +79,7 @@ const ArrangementFlowers: React.FC<ArrangementFlowersProps> = ({ category }) => 
                   {...field}
                   size="small"
                   label="Cost Override"
-                  placeholder={af.pricePerStem}
+                  placeholder={formatDollar(af.pricePerStem)}
                   InputProps={{
                     startAdornment: <InputAdornment position="start">$</InputAdornment>,
                   }}

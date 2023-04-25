@@ -8,17 +8,7 @@ interface SubtotalProps {
 }
 
 const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
-  const {
-    flowersSubtotal,
-    hardGoodsSubtotal,
-    laborSubtotal,
-    taxSubtotal,
-    venmoSubtotal,
-    paypalSubtotal,
-    taxTotal,
-    venmoTotal,
-    paypalTotal,
-  } = subtotals;
+  const { flowersSubtotal, hardGoodsSubtotal, laborSubtotal, taxSubtotal, taxTotal } = subtotals;
   return (
     <Grid container>
       <Grid container item alignItems="center">
@@ -69,30 +59,6 @@ const Subtotal: React.FC<SubtotalProps> = ({ subtotals }) => {
         </Grid>
         <Grid item xs={3}>
           <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(taxTotal)}`}</Typography>
-        </Grid>
-      </Grid>
-      <Grid container item alignItems="center">
-        <Grid item xs={3}>
-          <Typography variant="button">Venmo</Typography>
-        </Grid>
-        <Grid item xs={3}></Grid>
-        <Grid item xs={3}>
-          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(venmoSubtotal)}`}</Typography>
-        </Grid>
-        <Grid item xs={3}>
-          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(venmoTotal)}`}</Typography>
-        </Grid>
-      </Grid>
-      <Grid container item alignItems="center">
-        <Grid item xs={3}>
-          <Typography variant="button">PayPal</Typography>
-        </Grid>
-        <Grid item xs={3}></Grid>
-        <Grid item xs={3}>
-          <Typography style={{ textAlign: "right" }}> {`$ ${formatDollar(paypalSubtotal)}`}</Typography>
-        </Grid>
-        <Grid item xs={3}>
-          <Typography style={{ textAlign: "right" }}>{`$ ${formatDollar(paypalTotal)}`}</Typography>
         </Grid>
       </Grid>
     </Grid>

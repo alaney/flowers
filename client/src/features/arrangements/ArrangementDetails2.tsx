@@ -279,14 +279,10 @@ const ArrangementDetails: React.FC<ArrangementDetailsProps> = () => {
                 }}
               />
             </Grid> */}
+              <Grid item xs={2}></Grid>
+              <Grid item xs={2}></Grid>
               <Grid item xs={2}>
                 <div>{`$ ${formatDollar(subTotals.taxTotal)}`}</div>
-              </Grid>
-              <Grid item xs={2}>
-                <div>{`$ ${formatDollar(subTotals.venmoTotal)}`}</div>
-              </Grid>
-              <Grid item xs={2}>
-                <div>{`$ ${formatDollar(subTotals.paypalTotal)}`}</div>
               </Grid>
             </Grid>
           </div>
